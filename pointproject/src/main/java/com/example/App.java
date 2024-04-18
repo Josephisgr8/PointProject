@@ -1,9 +1,9 @@
 package com.example;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,9 +28,10 @@ public class App extends Application {
     public void start(Stage stage) {
 
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setTitle(WINDOW_TITLE_TEXT);
-        stage.setScene(new MainMenu(new Group(), getScreenX(), getScreenY()));
-        //addKeyCommands(stage.getScene());
+        stage.setScene(new Scene(new MainMenu(getScreenX(), getScreenY(), stage)));
         stage.show();
     }
 
@@ -42,6 +43,7 @@ public class App extends Application {
         return (int)Screen.getPrimary().getBounds().getHeight();
     }    
 
+    /*
     private void addKeyCommands(Scene scene){
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.ESCAPE) {
@@ -49,4 +51,5 @@ public class App extends Application {
             }
         });
     }
+    */
 }

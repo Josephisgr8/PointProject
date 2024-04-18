@@ -2,13 +2,14 @@ package com.example;
 
 import javafx.scene.*;
 //import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 import javafx.application.Platform;
 
-public class MainMenu extends Scene {
+public class MainMenu extends Group {
 
     final int START_BUTTON_WIDTH = 300;
     final int START_BUTTON_HEIGHT = 100;
@@ -20,16 +21,16 @@ public class MainMenu extends Scene {
     final int TITLE_TEXT_WIDTH = 520;
     final int TITLE_TEXT_HEIGHT = 200;
 
-    Group root = new Group();
     int scrX;
     int scrY;
+    Stage stage;
 
     
-    public MainMenu(Group r, int X, int Y){
-        super(r, X, Y);
-        root = r;
+    public MainMenu(int X, int Y, Stage s){
+        super();
         scrX = X;
         scrY = Y;
+        stage = s;
 
         addStartGameButton();
         addSettingsButton();
@@ -43,7 +44,7 @@ public class MainMenu extends Scene {
         startBtn.setPrefSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
         startBtn.setTranslateX(scrX/2 - START_BUTTON_WIDTH/2);
         startBtn.setTranslateY(scrY/2 - START_BUTTON_HEIGHT/2);
-        root.getChildren().add(startBtn);
+        this.getChildren().add(startBtn);
     }
 
     private void addSettingsButton() {
@@ -51,7 +52,10 @@ public class MainMenu extends Scene {
         settingsBtn.setPrefSize(START_BUTTON_WIDTH/2, START_BUTTON_HEIGHT/2);
         settingsBtn.setTranslateX(scrX/2 - START_BUTTON_WIDTH/4);
         settingsBtn.setTranslateY(scrY/2 + START_BUTTON_HEIGHT);
-        root.getChildren().add(settingsBtn);
+        settingsBtn.setOnMouseClicked( e -> {
+            moveToSettingsPage();
+        });
+        this.getChildren().add(settingsBtn);
     }
 
     private void addExitButton() {
@@ -62,7 +66,7 @@ public class MainMenu extends Scene {
         exitBtn.setOnMouseClicked(e -> {
             exitApp();
         });
-        root.getChildren().add(exitBtn);
+        this.getChildren().add(exitBtn);
     }
 
 
@@ -70,17 +74,20 @@ public class MainMenu extends Scene {
         Label titleText = new Label(TITLE_TEXT);
         titleText.setFont(new Font(TITLE_TEXT_FONT_SIZE));
         titleText.setPrefWidth(TITLE_TEXT_WIDTH);
-        //titleText.setPrefHeight(TITLE_TEXT_HEIGHT);
         titleText.setTextFill(Color.valueOf("RED"));
         System.out.println(titleText.getMinWidth());
         titleText.setTranslateX(scrX/2 - TITLE_TEXT_WIDTH/2);
-        root.getChildren().add(titleText);
+        this.getChildren().add(titleText);
     }
 
     //HELPER FUNCTIONS
     
     private void exitApp(){
         Platform.exit();
+    }
+
+    private void moveToSettingsPage() {
+        stage.getScene().setRoot(new SettingsMenu(scrX, scrY, stage));
     }
 
 }
