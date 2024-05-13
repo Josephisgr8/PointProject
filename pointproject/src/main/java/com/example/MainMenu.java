@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+
 import javafx.application.Platform;
 
 public class MainMenu extends Group {
@@ -23,7 +26,11 @@ public class MainMenu extends Group {
 
     int scrX;
     int scrY;
+    int menuListSizeY;
+    int menuListSizeX;
+    int buttonSizeY;
     Stage stage;
+    ArrayList<Button> menuList = new ArrayList<Button>();
 
     
     public MainMenu(int X, int Y, Stage s){
@@ -31,44 +38,44 @@ public class MainMenu extends Group {
         scrX = X;
         scrY = Y;
         stage = s;
+        menuListSizeY = Y/2;
+        menuListSizeX = X/4;
 
-        addStartGameButton();
-        addSettingsButton();
-        addExitButton();
+        createButtons();
         addTitelText();
     }
 
     //CREATION FUNCTIONS
-    private void addStartGameButton() {
-        Button startBtn = new Button(START_BUTTON_TEXT);
-        startBtn.setPrefSize(START_BUTTON_WIDTH, START_BUTTON_HEIGHT);
-        startBtn.setTranslateX(scrX/2 - START_BUTTON_WIDTH/2);
-        startBtn.setTranslateY(scrY/2 - START_BUTTON_HEIGHT/2);
-        this.getChildren().add(startBtn);
+    private void assignMenuSize(){
+        
     }
 
-    private void addSettingsButton() {
-        Button settingsBtn = new Button(SETTINGS_BUTTON_TEXT);
-        settingsBtn.setPrefSize(START_BUTTON_WIDTH/2, START_BUTTON_HEIGHT/2);
-        settingsBtn.setTranslateX(scrX/2 - START_BUTTON_WIDTH/4);
-        settingsBtn.setTranslateY(scrY/2 + START_BUTTON_HEIGHT);
-        settingsBtn.setOnMouseClicked( e -> {
-            moveToSettingsPage();
-        });
-        this.getChildren().add(settingsBtn);
+    private void createButtons(){
+        Button startBtn = newBtn(START_BUTTON_TEXT);
+        menuList.add(startBtn);
+        Button settingsBtn = newBtn(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
+        menuList.add(settingsBtn);
+        Button exitBtn = newBtn(EXIT_BUTTON_TEXT, new ExitApp());
+        menuList.add(exitBtn);
+
+        sizeButtons();
+        showList();
     }
 
-    private void addExitButton() {
-        Button exitBtn = new Button(EXIT_BUTTON_TEXT);
-        exitBtn.setPrefSize(START_BUTTON_WIDTH/2, START_BUTTON_HEIGHT/2);
-        exitBtn.setTranslateX(scrX/2 - START_BUTTON_WIDTH/4);
-        exitBtn.setTranslateY(scrY/2 + START_BUTTON_HEIGHT*2);
-        exitBtn.setOnMouseClicked(e -> {
-            exitApp();
-        });
-        this.getChildren().add(exitBtn);
+    private void showList(){
+        for (int i = 0; i < menuList.size(); i++){
+            this.getChildren().add(menuList.get(i));
+        }
     }
 
+    private void sizeButtons(){
+        for (int i = 0; i < menuList.size(); i++){
+            menuList.get(i).setPrefSize(menuListSizeX, menuListSizeY/(menuList.size()+1));
+            menuList.get(i).setTranslateX(scrX/2 - menuListSizeX/2);
+            menuList.get(i).setTranslateY(menuListSizeY/menuList.size() * i);
+            menuList.get(i).setTranslateY(menuList.get(i).getTranslateY() + scrY/4);
+        }
+    }
 
     private void addTitelText() {
         Label titleText = new Label(TITLE_TEXT);
@@ -81,13 +88,37 @@ public class MainMenu extends Group {
     }
 
     //HELPER FUNCTIONS
-    
-    private void exitApp(){
-        Platform.exit();
+
+    private Button newBtn(String txt){
+        Button newBtn = new Button(txt);
+        return newBtn;
     }
 
-    private void moveToSettingsPage() {
-        stage.getScene().setRoot(new SettingsMenu(scrX, scrY, stage));
+    private Button newBtn(String txt, ButtonFunction fnc){
+        Button newBtn = new Button(txt);
+        newBtn.setOnMouseClicked( e-> {
+            fnc.assignFunction();
+        });
+        return newBtn;
+    }
+
+    //HELPER CLASSES
+    
+    private class ExitApp implements ButtonFunction{
+        public void assignFunction(){
+            Platform.exit();
+        }
+    }
+
+    private class MoveToSettingsPage implements ButtonFunction{
+        public void assignFunction(){
+            stage.getScene().setRoot(new SettingsMenu(scrX, scrY, stage));
+        }
+    }
+    //INTERFACE
+
+    private interface ButtonFunction {
+        public void assignFunction();
     }
 
 }
