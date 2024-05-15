@@ -14,8 +14,6 @@ import javafx.application.Platform;
 
 public class MainMenu extends Group {
 
-    final int START_BUTTON_WIDTH = 300;
-    final int START_BUTTON_HEIGHT = 100;
     final String START_BUTTON_TEXT = "Start Game!";
     final String SETTINGS_BUTTON_TEXT = "Settings";
     final String EXIT_BUTTON_TEXT = "Exit";
@@ -24,31 +22,23 @@ public class MainMenu extends Group {
     final int TITLE_TEXT_WIDTH = 520;
     final int TITLE_TEXT_HEIGHT = 200;
 
-    int scrX;
-    int scrY;
-    int menuListSizeY;
-    int menuListSizeX;
-    int buttonSizeY;
-    Stage stage;
-    ArrayList<Button> menuList = new ArrayList<Button>();
+    private int scrX;
+    private int scrY;
+    private MenuController menuController;
+    private ArrayList<Button> menuList = new ArrayList<Button>();
 
     
-    public MainMenu(int X, int Y, Stage s){
+    public MainMenu(int X, int Y, MenuController mC){
         super();
         scrX = X;
         scrY = Y;
-        stage = s;
-        menuListSizeY = Y/2;
-        menuListSizeX = X/4;
+        menuController = mC; 
 
         createButtons();
-        addTitelText();
+        addTitleText();
     }
 
     //CREATION FUNCTIONS
-    private void assignMenuSize(){
-        
-    }
 
     private void createButtons(){
         Button startBtn = newBtn(START_BUTTON_TEXT);
@@ -69,6 +59,9 @@ public class MainMenu extends Group {
     }
 
     private void sizeButtons(){
+
+        int menuListSizeX = scrX / 4;
+        int menuListSizeY = scrY / 2;
         for (int i = 0; i < menuList.size(); i++){
             menuList.get(i).setPrefSize(menuListSizeX, menuListSizeY/(menuList.size()+1));
             menuList.get(i).setTranslateX(scrX/2 - menuListSizeX/2);
@@ -77,7 +70,7 @@ public class MainMenu extends Group {
         }
     }
 
-    private void addTitelText() {
+    private void addTitleText() {
         Label titleText = new Label(TITLE_TEXT);
         titleText.setFont(new Font(TITLE_TEXT_FONT_SIZE));
         titleText.setPrefWidth(TITLE_TEXT_WIDTH);
@@ -112,7 +105,7 @@ public class MainMenu extends Group {
 
     private class MoveToSettingsPage implements ButtonFunction{
         public void assignFunction(){
-            stage.getScene().setRoot(new SettingsMenu(scrX, scrY, stage));
+            menuController.setSettingsMenu();
         }
     }
     //INTERFACE

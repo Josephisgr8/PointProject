@@ -20,6 +20,9 @@ public class App extends Application {
 
     final String WINDOW_TITLE_TEXT = "Point Game";
 
+
+    private MenuController menuController;
+
     public static void main(String[] args){
         launch(args);
     }
@@ -31,7 +34,8 @@ public class App extends Application {
         stage.setFullScreenExitHint("");
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         stage.setTitle(WINDOW_TITLE_TEXT);
-        stage.setScene(new Scene(new MainMenu(getScreenX(), getScreenY(), stage)));
+        menuController = new MenuController(getScreenX(), getScreenY(), stage);
+        menuController.setMainMenu();
         stage.show();
     }
 
