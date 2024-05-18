@@ -108,6 +108,11 @@ public class MainMenu extends Group {
             menuController.setSettingsMenu();
         }
     }
+    private class StartGame implements ButtonFunction{
+        public void assignFunction(){
+            menuController.setGameMenu();
+        }
+    }
     //INTERFACE
 
     private interface ButtonFunction {

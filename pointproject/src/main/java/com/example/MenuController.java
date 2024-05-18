@@ -10,6 +10,7 @@ public class MenuController {
     private MainMenu mainMenu;
     private SettingsMenu settingsMenu;
     private MenuBackgroundColor menuBackgroundColor;
+    private GameMenu gameMenu;
 
     private int scrX;
     private int scrY;
@@ -24,6 +25,7 @@ public class MenuController {
 
         mainMenu = new MainMenu(scrX, scrY, this);
         settingsMenu = new SettingsMenu(scrX, scrY, this, stage);
+        gameMenu = new GameMenu(scrX, scrY, this);
         menuBackgroundColor = new MenuBackgroundColor();
         
     }
@@ -38,6 +40,10 @@ public class MenuController {
 
     public void setSettingsMenu(){
         stage.getScene().setRoot(settingsMenu);
+    }
+
+    public void setGameMenu(){
+        stage.getScene().setRoot(gameMenu);
     }
 
 }
