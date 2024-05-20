@@ -41,7 +41,7 @@ public class MainMenu extends Group {
     //CREATION FUNCTIONS
 
     private void createButtons(){
-        Button startBtn = newBtn(START_BUTTON_TEXT);
+        Button startBtn = newBtn(START_BUTTON_TEXT, new StartGame());
         menuList.add(startBtn);
         Button settingsBtn = newBtn(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
         menuList.add(settingsBtn);
