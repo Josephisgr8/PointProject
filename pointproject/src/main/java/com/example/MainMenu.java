@@ -5,6 +5,7 @@ import javafx.scene.*;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 import javafx.application.Platform;
 
-public class MainMenu extends Group {
+public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
 
     final String START_BUTTON_TEXT = "Start Game!";
     final String SETTINGS_BUTTON_TEXT = "Settings";
@@ -117,6 +118,22 @@ public class MainMenu extends Group {
 
     private interface ButtonFunction {
         public void assignFunction();
+    }
+
+    //Interface Requirements
+
+    public void keyStrokeRecieved(KeyCode kC){
+        switch (kC) {
+            case ENTER:
+                
+                break;
+        
+            case ESCAPE:
+                System.out.println("Pressed Escape on main menu!!!");
+                break;
+            default:
+                break;
+        }
     }
 
 }

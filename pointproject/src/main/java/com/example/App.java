@@ -1,14 +1,10 @@
 package com.example;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.*;
-import java.io.IOException;
+
 
 /**
  * JavaFX App
@@ -45,15 +41,6 @@ public class App extends Application {
 
     public int getScreenY(){
         return (int)Screen.getPrimary().getBounds().getHeight();
-    }    
-
-    /*
-    private void addKeyCommands(Scene scene){
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            if (key.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
-            }
-        });
     }
-    */
+
 }

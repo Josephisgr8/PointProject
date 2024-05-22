@@ -6,8 +6,9 @@ import java.util.ArrayList;
 
 import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 
-public class SettingsMenu extends Group{
+public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
 
     final String DONE_BUTTON_TEXT = "Done!";
     final String BACKGROUND_COLOR_TEXT = "Background Color";
@@ -97,4 +98,16 @@ public class SettingsMenu extends Group{
     private interface ButtonFunction {
         public void assignFunction();
     }
+
+    //Interface Requirements
+
+    public void keyStrokeRecieved(KeyCode kC){
+        switch (kC) {
+            case ESCAPE:
+                break;
+            default:
+                break;
+        }
+    }
+
 }

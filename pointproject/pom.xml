@@ -20,6 +20,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
         </dependency>
+    
+      <dependency>
+        <groupId>com.xenoamess.cyan_potion</groupId>
+        <artifactId>rpg_module</artifactId>
+        <version>0.167.2</version>
+      </dependency>
     </dependencies>
     <build>
         <plugins>
