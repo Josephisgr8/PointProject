@@ -11,7 +11,8 @@ public class GameTile extends Group{
     final int TILE_THICKNESS = 3;
     final Color TILE_COLOR = Color.WHITE;
     final Color TILE_BORDER_COLOR = Color.BLACK;
-    final Color TILE_SELECT_BORDER_COLOR = Color.RED;
+    final Color TILE_SELECT_BORDER_COLOR = Color.BLUE;
+    final int DEFAULT_TILE_VALUE = 0;
 
 
     private int tileSize;
@@ -36,6 +37,15 @@ public class GameTile extends Group{
         innerRect.setHeight(l - (2*TILE_THICKNESS));
     }
 
+    public void intializeLabel(){
+        double fontSize = tileSize/1.33333; //conversion from pixels to font size
+        realValue = DEFAULT_TILE_VALUE;
+        label = new Label("0");
+        label.setFont(new Font("Arial", fontSize));
+        label.setTranslateX(label.getTranslateX() + (tileSize/4));
+        this.getChildren().add(label);
+    }
+
     public void setXLoc(int X){
         this.setTranslateX(X);
         innerRect.setTranslateX(innerRect.getTranslateX()+TILE_THICKNESS);
@@ -46,12 +56,18 @@ public class GameTile extends Group{
         innerRect.setTranslateY(innerRect.getTranslateY()+TILE_THICKNESS);
     }
 
-    public void addLabel(){
-        double fontSize = tileSize/1.33333; //conversion from pixels to font size
-        label = new Label("9");
-        label.setFont(new Font("Arial", fontSize));
-        label.setTranslateX(label.getTranslateX() + (tileSize/4));
-        this.getChildren().add(label);
+    public void setValue(int newVal){
+        realValue = newVal;
+        label.setText(Integer.toString(realValue));
+    }
+
+    public int getValue(){
+        return realValue;
+    }
+
+    public void selectTile(){
+        gameBoard.selectTile(this);
+        outerRect.setFill(TILE_SELECT_BORDER_COLOR);
     }
 
     public void unSelect(){
@@ -62,11 +78,6 @@ public class GameTile extends Group{
 
     private void addSelectHandling(){
         this.setOnMouseClicked(e -> selectTile());
-    }
-
-    private void selectTile(){
-        gameBoard.selectTile(this);
-        outerRect.setFill(TILE_SELECT_BORDER_COLOR);
     }
 
     private void addRectangles(){

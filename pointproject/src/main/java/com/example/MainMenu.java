@@ -127,9 +127,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
             case ENTER:
                 
                 break;
-        
             case ESCAPE:
-                System.out.println("Pressed Escape on main menu!!!");
                 break;
             default:
                 break;
