@@ -104,6 +104,7 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
     public void keyStrokeRecieved(KeyCode kC){
         switch (kC) {
             case ESCAPE:
+                menuController.goToPrevMenu();
                 break;
             default:
                 break;

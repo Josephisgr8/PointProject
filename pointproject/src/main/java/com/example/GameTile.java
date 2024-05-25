@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -12,7 +14,9 @@ public class GameTile extends Group{
     final Color TILE_COLOR = Color.WHITE;
     final Color TILE_BORDER_COLOR = Color.BLACK;
     final Color TILE_SELECT_BORDER_COLOR = Color.BLUE;
-    final int DEFAULT_TILE_VALUE = 0;
+    final static int DEFAULT_TILE_VALUE = 0;
+
+    public ArrayList<Integer> impossibleValues = new ArrayList<Integer>();
 
 
     private int tileSize;
@@ -40,7 +44,7 @@ public class GameTile extends Group{
     public void intializeLabel(){
         double fontSize = tileSize/1.33333; //conversion from pixels to font size
         realValue = DEFAULT_TILE_VALUE;
-        label = new Label("0");
+        label = new Label(Integer.toString(DEFAULT_TILE_VALUE));
         label.setFont(new Font("Arial", fontSize));
         label.setTranslateX(label.getTranslateX() + (tileSize/4));
         this.getChildren().add(label);

@@ -1,6 +1,7 @@
 //This class is made to hold an instance of all pages so a new one doesn't have to be made each transition
 package com.example;
 
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -34,21 +35,36 @@ public class MenuController {
 
     //Accessors
     public void setMainMenu(){
-        stage.getScene().setRoot(mainMenu);
-        currMenu = mainMenu;
+        setPrevMenu();
+        setMenu(mainMenu);
     }
 
     public void setSettingsMenu(){
-        stage.getScene().setRoot(settingsMenu);
-        currMenu = settingsMenu;
+        setPrevMenu();
+        setMenu(settingsMenu);
     }
 
     public void setGameMenu(){
-        stage.getScene().setRoot(gameMenu);
-        currMenu = gameMenu;
+        setPrevMenu();
+        setMenu(gameMenu);
+    }
+
+    public void goToPrevMenu(){
+        setMenu(prevMenu);
     }
 
     //Private functions
+
+    private void setPrevMenu(){
+        if (currMenu != null){
+            prevMenu = currMenu;
+        }
+    }
+
+    private void setMenu(InterfaceMenu iM){
+        currMenu = iM;
+        stage.getScene().setRoot((Group) iM);
+    }
 
     private void createPages(){
 

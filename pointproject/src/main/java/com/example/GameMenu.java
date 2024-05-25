@@ -49,6 +49,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
 
         switch (kC) {
             case ESCAPE:
+                menuController.goToPrevMenu();
                 break;
             default:
                 break;
