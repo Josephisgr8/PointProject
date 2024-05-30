@@ -10,6 +10,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
     final int BOARD_SIZE = 9; //MUST BE DIVISIBLE BY 3
     final int BOARD_PADDING = 2;//MEASURED IN TILES
+    final int BOARD_DIFFICULTY_MODIFIER = 4; //higher is easier
 
     private MenuController menuController;
     private ArrayList<GameTile> gameTiles = new ArrayList<GameTile>();
@@ -47,6 +48,8 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             }   
         }
         generateBoardValues();
+        //hideBoardValues();
+
     }
 
     public void showBoard(){
@@ -205,6 +208,108 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         for (int j=1; j<BOARD_SIZE+1;j++){
             ls.add(j);
         }
+    }
+
+    private void hideBoardValues() {
+        //we want to go through the entire board, and for each tile we will randomly decide whether to hide it or not. Once it is hidden we will call a function to see if the board is still solvable. If so we continue on, if not we replace the value then continue.
+        for (int i = 0; i < gameTiles.size(); i++){
+            Random rng = new Random();
+            if (rng.nextInt(BOARD_DIFFICULTY_MODIFIER) != 0){continue;} // 1 in BOARD_DIFFICULTY_MODIFIER tiles will be possbily hidden
+            gameTiles.get(i).changeLabelState();
+            if (!boardSolvable()){
+                gameTiles.get(i).changeLabelState();
+            }
+        }
+    } 
+
+    private boolean boardSolvable(){ // loop through the tiles and for each hidden value tile, you will try to solve for it. If after the algorithm you are left with only 1 possible value for each hidden tile, then it is solvable. Else return false
+        //loop through to get all hidden tiles in the board
+        ArrayList<GameTile> hiddenTiles = new ArrayList<GameTile>();
+        for (int i=0; i<gameTiles.size(); i++){
+            if (gameTiles.get(i).tileValueState instanceof GameTileValueStateHidden){
+                hiddenTiles.add(gameTiles.get(i));
+            }
+        }
+
+        //now loop through hidden tiles to get a list of possible values for each hidden tile
+        ArrayList<Integer> possibleValues = new ArrayList<Integer>();
+        for (int i=0; i< hiddenTiles.size(); i++){
+
+            resetPossibleValues(possibleValues);
+            ArrayList<GameTile> compTiles = comparisonTiles(hiddenTiles.get(i)); //list of tiles in same row, col, and square
+
+            //loop through comparison tiles and remove each value from possible values if it is there, ONLY if the value if not hidden
+            compTiles.forEach( (n) -> {
+                if (possibleValues.contains(n.getValue()) && n.tileValueState instanceof GameTileValueStateShown){
+                    possibleValues.remove(possibleValues.indexOf(n.getValue()));
+                }
+            });
+
+            //save these possible values in the tile
+            gameTiles.get(i).possibleValues = possibleValues;
+
+        }
+
+        //now loop through hidden tiles again, and when you find one that has only 1 possible value, you will 
+
+        boolean changeMade = true;
+        while (changeMade){
+            changeMade = false;
+            //loop through hidden tiles. if possible value list is size 1, then go through its row, col, and square, and remove that possbile value from their lists
+            for (int i=0; i<hiddenTiles.size(); i++){
+                GameTile currTile = hiddenTiles.get(i);
+                if (currTile.possibleValues.size() == 1){
+                    changeMade = true;
+                    comparisonTiles(currTile).forEach((n) -> {
+                        if (n.possibleValues.contains(currTile.possibleValues.get(0))) { //if the comparison tile possible values contains the current hidden tiles 1 possible value, remove it
+                            n.possibleValues.remove(currTile.possibleValues.get(0));
+                        }
+                    });
+                    hiddenTiles.remove(hiddenTiles.get(i)); //remove the tile that had one possible value
+                    //hiddenTiles.get(i).tileValueState.nextState(); //we want this to not be hidden anymore so that it isn'
+                }
+            }
+        }
+
+        //now after the while loop, if there are any values left in hiddenTiles list, that means they have more than 1 possible value, so the most recently hidden tile cannot be hidden.
+        if (hiddenTiles.size() > 0){
+            return false;
+        }
+        return true;
+
+    }
+
+    //returns list of game tiles in the same row, col, and square, minus the given tile
+    private ArrayList<GameTile> comparisonTiles(GameTile gT){
+        ArrayList<GameTile> compTiles = new ArrayList<GameTile>();
+        
+        //get tiles in same row
+        int rowNum = gameTiles.indexOf(gT) / BOARD_SIZE;
+        for (int j=0; j < BOARD_SIZE; j++){
+            compTiles.add(gameTiles.get(rowNum * BOARD_SIZE + j));
+        }
+
+        //get tiles in same column
+        int colNum = gameTiles.indexOf(gT) % BOARD_SIZE;
+        for (int j=0; j< BOARD_SIZE; j++){
+            compTiles.add(gameTiles.get(j * BOARD_SIZE + colNum));
+        }
+
+        //get tiles in same square
+        int squareRow = rowNum / 3;
+        int squareCol = colNum / 3;
+        
+        for (int j = squareRow*3; j < squareRow*3 + 3; j++){
+            int leftmostVal = (j * BOARD_SIZE) + (squareCol * 3);
+            compTiles.add(gameTiles.get(leftmostVal));
+            compTiles.add(gameTiles.get(leftmostVal+1));
+            compTiles.add(gameTiles.get(leftmostVal+2));
+        }
+
+        //now remove hidden tile from comparison tile list and return
+        compTiles.remove(gT);
+
+        return compTiles;
     }
 
     /*private void generateBoardValues2(){

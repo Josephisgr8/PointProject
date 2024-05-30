@@ -16,7 +16,10 @@ public class GameTile extends Group{
     final Color TILE_SELECT_BORDER_COLOR = Color.BLUE;
     final static int DEFAULT_TILE_VALUE = 0;
 
-    public ArrayList<Integer> impossibleValues = new ArrayList<Integer>();
+    public ArrayList<Integer> impossibleValues = new ArrayList<Integer>(); //for assigning tile values
+    public ArrayList<Integer> possibleValues = new ArrayList<Integer>();    //for checking hidden tile values
+    public String shownValue;
+    public GameTileValueState tileValueState;
 
 
     private int tileSize;
@@ -42,11 +45,8 @@ public class GameTile extends Group{
     }
 
     public void intializeLabel(){
-        double fontSize = tileSize/1.33333; //conversion from pixels to font size
-        realValue = DEFAULT_TILE_VALUE;
-        label = new Label(Integer.toString(DEFAULT_TILE_VALUE));
-        label.setFont(new Font("Arial", fontSize));
-        label.setTranslateX(label.getTranslateX() + (tileSize/4));
+        tileValueState = new GameTileValueStateShown(label, DEFAULT_TILE_VALUE, tileSize);
+        label = this.tileValueState.initializeLabel();
         this.getChildren().add(label);
     }
 
@@ -62,7 +62,7 @@ public class GameTile extends Group{
 
     public void setValue(int newVal){
         realValue = newVal;
-        label.setText(Integer.toString(realValue));
+        label = tileValueState.setValue(realValue);
     }
 
     public int getValue(){
@@ -76,6 +76,11 @@ public class GameTile extends Group{
 
     public void unSelect(){
         outerRect.setFill(TILE_BORDER_COLOR);
+    }
+
+    public void changeLabelState(){
+        tileValueState = tileValueState.nextState();
+        label = tileValueState.updateLabel();
     }
     
     //Private Functions
