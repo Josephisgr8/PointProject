@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -11,15 +13,17 @@ import javafx.scene.text.Font;
 public class GameTile extends Group{
 
     final int TILE_THICKNESS = 3;
-    final Color TILE_COLOR = Color.WHITE;
-    final Color TILE_BORDER_COLOR = Color.BLACK;
-    final Color TILE_SELECT_BORDER_COLOR = Color.BLUE;
+    final static Color TILE_COLOR = Color.WHITE;
+    final static Color TILE_BORDER_COLOR = Color.BLACK;
+    final static Color TILE_SELECT_GUESS_BORDER_COLOR = Color.RED;
+    final static Color TILE_SELECT_POSSIBLE_BORDER_COLOR = Color.BLUE;
     final static int DEFAULT_TILE_VALUE = 0;
 
     public ArrayList<Integer> impossibleValues = new ArrayList<Integer>(); //for assigning tile values
     public ArrayList<Integer> possibleValues = new ArrayList<Integer>();    //for checking hidden tile values
     public String shownValue;
     public GameTileValueState tileValueState;
+    public GameTileSelectState tileSelectState;
 
 
     private int tileSize;
@@ -34,6 +38,7 @@ public class GameTile extends Group{
         gameBoard = gB;
         addRectangles();
         addSelectHandling();
+        tileSelectState = new GameTileSelectStateNone(outerRect);
     }
 
     public void setWandH(int l){
@@ -69,24 +74,48 @@ public class GameTile extends Group{
         return realValue;
     }
 
-    public void selectTile(){
-        gameBoard.selectTile(this);
-        outerRect.setFill(TILE_SELECT_BORDER_COLOR);
+    private void tileClicked(MouseEvent e){
+        if (e.getButton() == MouseButton.SECONDARY) {
+            System.out.println("tile right clicked");
+            tileSelectState = tileSelectState.tileRightClicked();
+        }
+        else if (e.getButton() == MouseButton.PRIMARY){
+            System.out.println("tile left clicked");
+            tileSelectState = tileSelectState.tileLeftClicked();
+        }
+
+        gameBoard.tileClicked(this);
     }
 
     public void unSelect(){
-        outerRect.setFill(TILE_BORDER_COLOR);
+        tileSelectState = tileSelectState.unselect();        
     }
 
     public void changeLabelState(){
         tileValueState = tileValueState.nextState();
         label = tileValueState.updateLabel();
     }
+
+    public void valueTyped(int i){
+        if (this.realValue==i && this.tileValueState instanceof GameTileValueStateHidden){
+            this.changeLabelState();
+        }
+    }
+
+    public void tileMovedTo(GameTileSelectState gtss){
+        if (gtss instanceof GameTileSelectStateGuess){
+            this.tileSelectState = new GameTileSelectStateGuess(outerRect);
+        }
+        else{
+            this.tileSelectState = new GameTileSelectStatePossibility(outerRect);
+        }
+        gameBoard.tileClicked(this);
+    }
     
     //Private Functions
 
     private void addSelectHandling(){
-        this.setOnMouseClicked(e -> selectTile());
+        this.setOnMouseClicked(e -> tileClicked(e));
     }
 
     private void addRectangles(){

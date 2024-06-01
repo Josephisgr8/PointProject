@@ -48,7 +48,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             }   
         }
         generateBoardValues();
-        //hideBoardValues();
+        hideBoardValues();
 
     }
 
@@ -58,13 +58,17 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         }
     }
 
-    public void selectTile(GameTile gT){
-        if (selectedTile != null){
-            selectedTile.unSelect();
+    public void tileClicked(GameTile gT){
+        if (gT.tileSelectState instanceof GameTileSelectStateNone) {// the instance where the selected tile was clicked again so needs to be unselected
+            selectedTile = null;
         }
-        selectedTile = gT;
+        else {
+            if (selectedTile !=null && selectedTile != gT){
+                selectedTile.unSelect();
+            }
+            selectedTile = gT;
+        }
     }
-
     //Interface Requirements
     public void keyStrokeRecieved(KeyCode kC){
         switch (kC) {
@@ -80,6 +84,33 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             case W:
                 moveUp();
                 break;
+            case NUMPAD1:
+                valueTyped(1);
+                break;
+            case NUMPAD2:
+                valueTyped(2);
+                break;
+            case NUMPAD3:
+                valueTyped(3);
+                break;
+            case NUMPAD4:
+                valueTyped(4);
+                break;
+            case NUMPAD5:
+                valueTyped(5);
+                break;
+            case NUMPAD6:
+                valueTyped(6);
+                break;
+            case NUMPAD7:
+                valueTyped(7);
+                break;
+            case NUMPAD8:
+                valueTyped(8);
+                break;
+            case NUMPAD9:
+                valueTyped(9);
+                break;
             default:
                 break;
         }
@@ -91,11 +122,11 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         if (selectedTile == null) {return;}
         int selTileInd = gameTiles.indexOf(selectedTile);
         if (selTileInd % BOARD_SIZE == 0) {
-            gameTiles.get(selTileInd + BOARD_SIZE - 1).selectTile();
+            gameTiles.get(selTileInd + BOARD_SIZE - 1).tileMovedTo(selectedTile.tileSelectState);
             return;
             }
         else {
-            gameTiles.get(selTileInd - 1).selectTile();
+            gameTiles.get(selTileInd - 1).tileMovedTo(selectedTile.tileSelectState);
         }
     }
 
@@ -103,10 +134,10 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         if (selectedTile == null) {return;}
         int selTileInd = gameTiles.indexOf(selectedTile);
         if (selTileInd % BOARD_SIZE == BOARD_SIZE-1){
-            gameTiles.get(selTileInd - BOARD_SIZE + 1).selectTile();
+            gameTiles.get(selTileInd - BOARD_SIZE + 1).tileMovedTo(selectedTile.tileSelectState);
         }
         else {
-            gameTiles.get(selTileInd + 1).selectTile();
+            gameTiles.get(selTileInd + 1).tileMovedTo(selectedTile.tileSelectState);
         }
     }
 
@@ -114,10 +145,10 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         if (selectedTile==null) {return;}
         int selTileInd = gameTiles.indexOf(selectedTile);
         if (selTileInd < BOARD_SIZE) {
-            gameTiles.get(BOARD_SIZE * (BOARD_SIZE - 1) + selTileInd).selectTile();
+            gameTiles.get(BOARD_SIZE * (BOARD_SIZE - 1) + selTileInd).tileMovedTo(selectedTile.tileSelectState);
         }
         else{
-            gameTiles.get(selTileInd - BOARD_SIZE).selectTile();
+            gameTiles.get(selTileInd - BOARD_SIZE).tileMovedTo(selectedTile.tileSelectState);
         }
     }
 
@@ -125,10 +156,16 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         if (selectedTile == null) {return;}
         int selTileInd = gameTiles.indexOf(selectedTile);
         if (selTileInd >= BOARD_SIZE*(BOARD_SIZE-1)) {
-            gameTiles.get(selTileInd % BOARD_SIZE).selectTile();
+            gameTiles.get(selTileInd % BOARD_SIZE).tileMovedTo(selectedTile.tileSelectState);
         }
         else {
-            gameTiles.get(selTileInd + BOARD_SIZE).selectTile();
+            gameTiles.get(selTileInd + BOARD_SIZE).tileMovedTo(selectedTile.tileSelectState);
+        }
+    }
+
+    private void valueTyped(int i){
+        if (selectedTile != null){
+            selectedTile.valueTyped(i);
         }
     }
 
@@ -238,15 +275,15 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             resetPossibleValues(possibleValues);
             ArrayList<GameTile> compTiles = comparisonTiles(hiddenTiles.get(i)); //list of tiles in same row, col, and square
 
-            //loop through comparison tiles and remove each value from possible values if it is there, ONLY if the value if not hidden
+            //loop through comparison tiles and remove each value from possible values if it is there, ONLY if the value is not hidden
             compTiles.forEach( (n) -> {
                 if (possibleValues.contains(n.getValue()) && n.tileValueState instanceof GameTileValueStateShown){
                     possibleValues.remove(possibleValues.indexOf(n.getValue()));
                 }
             });
 
-            //save these possible values in the tile
-            gameTiles.get(i).possibleValues = possibleValues;
+            //save these possible values in the tile (this should make changes to the master list since it is not a copy)
+            hiddenTiles.get(i).possibleValues = new ArrayList<Integer>(possibleValues);
 
         }
 
@@ -261,12 +298,12 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
                 if (currTile.possibleValues.size() == 1){
                     changeMade = true;
                     comparisonTiles(currTile).forEach((n) -> {
+                        if (n == currTile) {System.out.println("they are the same");}
                         if (n.possibleValues.contains(currTile.possibleValues.get(0))) { //if the comparison tile possible values contains the current hidden tiles 1 possible value, remove it
                             n.possibleValues.remove(currTile.possibleValues.get(0));
                         }
                     });
                     hiddenTiles.remove(hiddenTiles.get(i)); //remove the tile that had one possible value
-                    //hiddenTiles.get(i).tileValueState.nextState(); //we want this to not be hidden anymore so that it isn'
                 }
             }
         }
@@ -289,12 +326,14 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             compTiles.add(gameTiles.get(rowNum * BOARD_SIZE + j));
         }
 
+        compTiles.remove(gT);
         //get tiles in same column
         int colNum = gameTiles.indexOf(gT) % BOARD_SIZE;
         for (int j=0; j< BOARD_SIZE; j++){
             compTiles.add(gameTiles.get(j * BOARD_SIZE + colNum));
         }
 
+        compTiles.remove(gT);
         //get tiles in same square
         int squareRow = rowNum / 3;
         int squareCol = colNum / 3;
