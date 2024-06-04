@@ -1,5 +1,6 @@
 package com.example;
 
+import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 
 public abstract class GameTileSelectState {
@@ -10,10 +11,11 @@ public abstract class GameTileSelectState {
         outerRect = oR;
     }
 
-    public abstract void valueTyped(int i);
+    public abstract Label valueTyped(int i, GameTileValueState gtvs);
     public abstract GameTileSelectState tileLeftClicked();
     public abstract GameTileSelectState tileRightClicked();
     public abstract GameTileSelectState unselect();
+    public abstract Label updateLabel(Label l, GameTileValueState gtvs); //just used to re-locate label
 }
 
 class GameTileSelectStateGuess extends GameTileSelectState{
@@ -22,8 +24,9 @@ class GameTileSelectStateGuess extends GameTileSelectState{
         outerRect.setFill(GameTile.TILE_SELECT_GUESS_BORDER_COLOR);
     }
 
-    public void valueTyped(int i){
-
+    public Label valueTyped(int i, GameTileValueState gtvs){
+        gtvs.guessedValue(i);
+        return gtvs.updateLabel();
     }
 
     public GameTileSelectState tileLeftClicked(){
@@ -37,6 +40,11 @@ class GameTileSelectStateGuess extends GameTileSelectState{
     public GameTileSelectState unselect(){
         return new GameTileSelectStateNone(outerRect);
     }
+
+    public Label updateLabel(Label l, GameTileValueState gtvs){
+        gtvs.readyForGuess();
+        return gtvs.updateLabel();
+    }
 }
 
 class GameTileSelectStatePossibility extends GameTileSelectState{
@@ -45,8 +53,8 @@ class GameTileSelectStatePossibility extends GameTileSelectState{
         outerRect.setFill(GameTile.TILE_SELECT_POSSIBLE_BORDER_COLOR);
     }
 
-    public void valueTyped(int i){
-
+    public Label valueTyped(int i, GameTileValueState gtvs){
+        return gtvs.possibleValue(i);
     }
 
     public GameTileSelectState tileLeftClicked(){
@@ -60,6 +68,11 @@ class GameTileSelectStatePossibility extends GameTileSelectState{
     public GameTileSelectState unselect(){
         return new GameTileSelectStateNone(outerRect);
     }
+
+    public Label updateLabel(Label l, GameTileValueState gtvs){
+        gtvs.readyForPossible();
+        return gtvs.updateLabel();
+    }
 }
 
 class GameTileSelectStateNone extends GameTileSelectState{
@@ -68,8 +81,10 @@ class GameTileSelectStateNone extends GameTileSelectState{
         outerRect.setFill(GameTile.TILE_BORDER_COLOR);
     }
 
-    public void valueTyped(int i){
-
+    public Label valueTyped(int i, GameTileValueState gtvs){
+        //should never happen
+        System.out.println("THIS SHOULD NEVER PRINT!!!");
+        return null;
     }
 
     public GameTileSelectState tileLeftClicked(){
@@ -82,5 +97,9 @@ class GameTileSelectStateNone extends GameTileSelectState{
 
     public GameTileSelectState unselect(){
         return new GameTileSelectStateNone(outerRect);
+    }
+
+    public Label updateLabel(Label l, GameTileValueState gtvs){
+        return l;
     }
 }

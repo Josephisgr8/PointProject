@@ -8,9 +8,10 @@ import javafx.scene.input.KeyCode;
 
 public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
-    final int BOARD_SIZE = 9; //MUST BE DIVISIBLE BY 3
+    final static int BOARD_SIZE = 9; //MUST BE DIVISIBLE BY 3
     final int BOARD_PADDING = 2;//MEASURED IN TILES
-    final int BOARD_DIFFICULTY_MODIFIER = 4; //higher is easier
+    final int BOARD_DIFFICULTY_MODIFIER = 1; //higher is easier
+    final int SQUARE_SPACING = 10; 
 
     private MenuController menuController;
     private ArrayList<GameTile> gameTiles = new ArrayList<GameTile>();
@@ -42,8 +43,26 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
                 //Now set tile's x and y-locations and add to list
                 int XLoc =((i+ BOARD_PADDING) * tileSize);
-                currTile.setXLoc(XLoc);
-                currTile.setYLoc(YLoc);
+                //make distinct squares within board by addign space between them
+                if (i >= 6 ){
+                    currTile.setXLoc(XLoc + SQUARE_SPACING * 2);
+                }
+                else if (i >= 3){
+                    currTile.setXLoc(XLoc + SQUARE_SPACING);
+                }
+                else {
+                    currTile.setXLoc(XLoc);
+                }
+                
+                if (y >= 6){
+                    currTile.setYLoc(YLoc + SQUARE_SPACING * 2);
+                }
+                else if (y >= 3){
+                    currTile.setYLoc(YLoc + SQUARE_SPACING);
+                } 
+                else{
+                    currTile.setYLoc(YLoc);
+                }
                 gameTiles.add(currTile);
             }   
         }
@@ -85,30 +104,39 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
                 moveUp();
                 break;
             case NUMPAD1:
+            case DIGIT1:
                 valueTyped(1);
                 break;
             case NUMPAD2:
+            case DIGIT2:
                 valueTyped(2);
                 break;
             case NUMPAD3:
+            case DIGIT3:
                 valueTyped(3);
                 break;
             case NUMPAD4:
+            case DIGIT4:
                 valueTyped(4);
                 break;
             case NUMPAD5:
+            case DIGIT5:
                 valueTyped(5);
                 break;
             case NUMPAD6:
+            case DIGIT6:
                 valueTyped(6);
                 break;
             case NUMPAD7:
+            case DIGIT7:
                 valueTyped(7);
                 break;
             case NUMPAD8:
+            case DIGIT8:
                 valueTyped(8);
                 break;
             case NUMPAD9:
+            case DIGIT9:
                 valueTyped(9);
                 break;
             default:

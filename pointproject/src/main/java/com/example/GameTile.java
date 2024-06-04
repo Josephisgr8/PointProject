@@ -51,7 +51,7 @@ public class GameTile extends Group{
 
     public void intializeLabel(){
         tileValueState = new GameTileValueStateShown(label, DEFAULT_TILE_VALUE, tileSize);
-        label = this.tileValueState.initializeLabel();
+        label = this.tileValueState.updateLabel();//initializeLabel();
         this.getChildren().add(label);
     }
 
@@ -76,12 +76,14 @@ public class GameTile extends Group{
 
     private void tileClicked(MouseEvent e){
         if (e.getButton() == MouseButton.SECONDARY) {
-            System.out.println("tile right clicked");
+            //System.out.println("tile right clicked");
             tileSelectState = tileSelectState.tileRightClicked();
+            label = tileSelectState.updateLabel(label, tileValueState);
         }
         else if (e.getButton() == MouseButton.PRIMARY){
-            System.out.println("tile left clicked");
+            //System.out.println("tile left clicked");
             tileSelectState = tileSelectState.tileLeftClicked();
+            label = tileSelectState.updateLabel(label, tileValueState);
         }
 
         gameBoard.tileClicked(this);
@@ -97,9 +99,11 @@ public class GameTile extends Group{
     }
 
     public void valueTyped(int i){
-        if (this.realValue==i && this.tileValueState instanceof GameTileValueStateHidden){
+        label = this.tileSelectState.valueTyped(i, tileValueState);
+        //this.tileValueState.valueTyped(i);
+        /*if (this.realValue==i && this.tileValueState instanceof GameTileValueStateHidden){
             this.changeLabelState();
-        }
+        } */
     }
 
     public void tileMovedTo(GameTileSelectState gtss){
