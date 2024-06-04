@@ -15,18 +15,22 @@ public abstract class GameTileValueState {
     public abstract Label possibleValue(int i);
     public abstract void readyForPossible();// both this and the method below are used to re-locate the label in the tile
     public abstract void readyForGuess();
+    public abstract boolean getWasGuessedRight();
+    public abstract void removePossibleValue(int i);
 }
 
 class GameTileValueStateHidden extends GameTileValueState{ //hidden means the real value is not shown
     private Label label;
     private int value;
     private int size;
+    private boolean wasGuessedRight;
     private ArrayList<Integer> possibleValues = new ArrayList<Integer>();
 
     public GameTileValueStateHidden(Label l, int val, int s){
         label = l;
         value = val;
         size = s;
+        wasGuessedRight = false;
         initializeLabel();
     }
 
@@ -59,6 +63,8 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
             double fontSize = size / (1.33333); //conversion from pixels to font size
             label.setFont(new Font("Arial", fontSize));
             label.setText(Integer.toString(value));
+            //also want to go through and remove this value from the possible values on the board
+            wasGuessedRight = true;
         }
     }
 
@@ -93,12 +99,24 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
     public void readyForGuess(){
         label.setTranslateX(size/4);
     }
+
+    public boolean getWasGuessedRight(){
+        return wasGuessedRight;
+    }
+
+    public void removePossibleValue(int i){
+        if (possibleValues.contains(i)){
+            //possibleValues.remove(possibleValues.indexOf(i));
+            possibleValue(i);
+        }
+    }
 }
 
 class GameTileValueStateShown extends GameTileValueState{
     private Label label;
     private int value;
     private int size;
+    
 
     public GameTileValueStateShown(Label l, int val, int s){
         label = l;
@@ -148,6 +166,14 @@ class GameTileValueStateShown extends GameTileValueState{
     }
 
     public void readyForGuess(){
+        
+    }
+
+    public boolean getWasGuessedRight(){
+        return true;
+    }
+
+    public void removePossibleValue(int i){
         
     }
 }

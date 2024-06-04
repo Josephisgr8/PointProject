@@ -4,7 +4,6 @@ import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 
 public abstract class GameTileSelectState {
-    public static GameTileSelectState currState;
     public Rectangle outerRect;
 
     public GameTileSelectState(Rectangle oR){

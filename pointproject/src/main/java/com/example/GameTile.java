@@ -100,6 +100,10 @@ public class GameTile extends Group{
 
     public void valueTyped(int i){
         label = this.tileSelectState.valueTyped(i, tileValueState);
+        if (tileValueState.getWasGuessedRight()){
+            System.out.println("tile guessed right");
+            gameBoard.removePossibleTileValues(this);
+        }
         //this.tileValueState.valueTyped(i);
         /*if (this.realValue==i && this.tileValueState instanceof GameTileValueStateHidden){
             this.changeLabelState();
@@ -114,6 +118,10 @@ public class GameTile extends Group{
             this.tileSelectState = new GameTileSelectStatePossibility(outerRect);
         }
         gameBoard.tileClicked(this);
+    }
+
+    public void updateLabel(){
+        label = tileValueState.updateLabel();
     }
     
     //Private Functions

@@ -10,7 +10,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
     final static int BOARD_SIZE = 9; //MUST BE DIVISIBLE BY 3
     final int BOARD_PADDING = 2;//MEASURED IN TILES
-    final int BOARD_DIFFICULTY_MODIFIER = 1; //higher is easier
+    final int BOARD_DIFFICULTY_MODIFIER = 3; //higher is easier
     final int SQUARE_SPACING = 10; 
 
     private MenuController menuController;
@@ -44,20 +44,20 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
                 //Now set tile's x and y-locations and add to list
                 int XLoc =((i+ BOARD_PADDING) * tileSize);
                 //make distinct squares within board by addign space between them
-                if (i >= 6 ){
+                if (i >= (BOARD_SIZE/3 * 2) ){
                     currTile.setXLoc(XLoc + SQUARE_SPACING * 2);
                 }
-                else if (i >= 3){
+                else if (i >= (BOARD_SIZE/3)){
                     currTile.setXLoc(XLoc + SQUARE_SPACING);
                 }
                 else {
                     currTile.setXLoc(XLoc);
                 }
                 
-                if (y >= 6){
+                if (y >= (BOARD_SIZE/3 * 2)){
                     currTile.setYLoc(YLoc + SQUARE_SPACING * 2);
                 }
-                else if (y >= 3){
+                else if (y >= (BOARD_SIZE/3)){
                     currTile.setYLoc(YLoc + SQUARE_SPACING);
                 } 
                 else{
@@ -88,6 +88,14 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             selectedTile = gT;
         }
     }
+
+    public void removePossibleTileValues(GameTile gt){
+        comparisonTiles(gt).forEach( (n) -> {
+            n.tileValueState.removePossibleValue(gt.getValue());
+            n.updateLabel();
+        });
+    }
+
     //Interface Requirements
     public void keyStrokeRecieved(KeyCode kC){
         switch (kC) {
