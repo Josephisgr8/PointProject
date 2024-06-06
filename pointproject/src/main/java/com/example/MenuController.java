@@ -3,6 +3,13 @@ package com.example;
 
 import java.util.ArrayList;
 
+import com.example.Interfaces.InterfaceMenu;
+import com.example.menus.GameDifficultyMenu;
+import com.example.menus.MainMenu;
+import com.example.menus.SettingsMenu;
+import com.example.menus.gamemenu.GameBoard;
+import com.example.menus.gamemenu.GameMenu;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +24,7 @@ public class MenuController {
     private GameDifficultyMenu gameDifficultyMenu;
     private GameMenu gameMenu;
     private GameBoard gameBoard;
+   // private MusicController musicController;
 
     private int scrX;
     private int scrY;
