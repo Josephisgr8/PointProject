@@ -111,7 +111,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     }
     private class StartGame implements ButtonFunction{
         public void assignFunction(){
-            menuController.setGameMenu();
+            menuController.setDifficultyMenu();
         }
     }
     //INTERFACE

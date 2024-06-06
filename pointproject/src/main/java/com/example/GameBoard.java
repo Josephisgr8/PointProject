@@ -17,10 +17,12 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
     private ArrayList<GameTile> gameTiles = new ArrayList<GameTile>();
     private GameTile selectedTile;
     private int tileSize;
+    private int difficultyModifier;
 
-    public GameBoard(MenuController mC){
+    public GameBoard(MenuController mC, int dM){
         super();
         menuController = mC;
+        difficultyModifier = dM;
 
     }
 
@@ -287,7 +289,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         //we want to go through the entire board, and for each tile we will randomly decide whether to hide it or not. Once it is hidden we will call a function to see if the board is still solvable. If so we continue on, if not we replace the value then continue.
         for (int i = 0; i < gameTiles.size(); i++){
             Random rng = new Random();
-            if (rng.nextInt(BOARD_DIFFICULTY_MODIFIER) != 0){continue;} // 1 in BOARD_DIFFICULTY_MODIFIER tiles will be possbily hidden
+            if (rng.nextInt(difficultyModifier) != 0){continue;} // 1 in BOARD_DIFFICULTY_MODIFIER tiles will be possbily hidden
             gameTiles.get(i).changeLabelState();
             if (!boardSolvable()){
                 gameTiles.get(i).changeLabelState();
