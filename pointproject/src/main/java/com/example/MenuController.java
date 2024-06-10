@@ -9,10 +9,12 @@ import com.example.menus.MainMenu;
 import com.example.menus.SettingsMenu;
 import com.example.menus.gamemenu.GameBoard;
 import com.example.menus.gamemenu.GameMenu;
+import com.example.helpClasses.ColorPackage;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -20,7 +22,7 @@ public class MenuController {
 
     private MainMenu mainMenu;
     private SettingsMenu settingsMenu;
-    private MenuBackgroundColor menuBackgroundColor;
+    private GameThemeHandler gameThemeHandler = new GameThemeHandler();
     private GameDifficultyMenu gameDifficultyMenu;
     private GameMenu gameMenu;
     private GameBoard gameBoard;
@@ -29,7 +31,7 @@ public class MenuController {
     private int scrX;
     private int scrY;
     private Stage stage;
-    private InterfaceMenu prevMenu;
+    //private InterfaceMenu prevMenu;
     //private InterfaceMenu currMenu;
     private ArrayList<InterfaceMenu> menuAccessList = new ArrayList<InterfaceMenu>();
 
@@ -67,6 +69,31 @@ public class MenuController {
         setMenu(menuAccessList.get(menuAccessList.size()-1));
     }
 
+    public ColorPackage getBackgroundColor(){
+        return gameThemeHandler.getTheme();
+    }
+
+    public int getScrX(){
+        return scrX;
+    }
+
+    public int getScrY(){
+        return scrY;
+    }
+
+    public Stage getStage(){
+        return stage;
+    }
+
+    public GameThemeHandler getGameThemeHandler(){
+        return gameThemeHandler;
+    }
+    //--------------------
+
+    public void updateBackground(GameThemeHandler mbc){ //to keep the MenuController's gameThemeHandler up to date
+        gameThemeHandler = mbc;
+    }
+
     public void difficultyChosen(int i){
         //DIFFICULTY SELECTED SO CREATE GAMEBOARD AND GAME MENU
         gameBoard = new GameBoard(this, i);
@@ -91,8 +118,8 @@ public class MenuController {
     private void createPages(){
 
         mainMenu = new MainMenu(scrX, scrY, this);
-        settingsMenu = new SettingsMenu(scrX, scrY, this, stage);
-        menuBackgroundColor = new MenuBackgroundColor();
+        settingsMenu = new SettingsMenu(this);
+        //menuBackgroundColor = new MenuBackgroundColor();
         gameDifficultyMenu = new GameDifficultyMenu(scrX, scrY, this);
 
     }

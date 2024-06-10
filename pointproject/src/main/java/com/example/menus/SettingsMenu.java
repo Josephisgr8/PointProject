@@ -4,10 +4,11 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-import com.example.MenuBackgroundColor;
+import com.example.GameThemeHandler;
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
+//import com.example.MenuBackgroundColor.*;
 
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -23,14 +24,12 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
     private MenuController menuController;
     private Stage stage;
     private ArrayList<Button> settingsList = new ArrayList<Button>();
-    private MenuBackgroundColor menuBackgroundColor = new MenuBackgroundColor();
+    private GameThemeHandler gameThemeHandler;// = new GameThemeHandler();
 
-    public SettingsMenu(int X, int Y, MenuController mC, Stage s) {
+    public SettingsMenu(MenuController mC) {
         super();
-        scrX = X;
-        scrY = Y;
         menuController = mC;
-        stage = s;
+        getInfo();
         createButtons();
     }
 
@@ -85,11 +84,19 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
         menuController.setMainMenu();
     }
 
+    private void getInfo(){
+        scrX = menuController.getScrX();
+        scrY = menuController.getScrY();
+        stage = menuController.getStage();
+        gameThemeHandler = menuController.getGameThemeHandler();
+    }
+
     //HELPER CLASSES
 
     private class ChangeBackgroundColor implements ButtonFunction{
         public void assignFunction(){
-            stage.getScene().setFill(menuBackgroundColor.nextBackgroundColor());
+            stage.getScene().setFill(gameThemeHandler.nextBackgroundColor().getPrimaryColor());
+            menuController.updateBackground(gameThemeHandler);
         }
     }
 

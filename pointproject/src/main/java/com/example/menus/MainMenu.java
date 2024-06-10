@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
+import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.application.Platform;
 
 public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
 
-    final String START_BUTTON_TEXT = "Start Game!";
+    final String START_BUTTON_TEXT = "Start Game";
     final String SETTINGS_BUTTON_TEXT = "Settings";
     final String EXIT_BUTTON_TEXT = "Exit";
     final String TITLE_TEXT = "Point Game";
@@ -30,7 +32,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private int scrX;
     private int scrY;
     private MenuController menuController;
-    private ArrayList<Button> menuList = new ArrayList<Button>();
+    private ArrayList<CustomButton> menuList = new ArrayList<CustomButton>();
 
     
     public MainMenu(int X, int Y, MenuController mC){
@@ -46,12 +48,24 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     //CREATION FUNCTIONS
 
     private void createButtons(){
-        Button startBtn = newBtn(START_BUTTON_TEXT, new StartGame());
+        CustomButton startBtn = new CustomButton(START_BUTTON_TEXT, new StartGame());
+        startBtn.updateTheme(menuController);
+        menuList.add(startBtn);
+
+        CustomButton settingsBtn = new CustomButton(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
+        settingsBtn.updateTheme(menuController);
+        menuList.add(settingsBtn);
+
+        CustomButton exitBtn = new CustomButton(EXIT_BUTTON_TEXT, new ExitApp());
+        exitBtn.updateTheme(menuController);
+        menuList.add(exitBtn);
+
+        /*Button startBtn = newBtn(START_BUTTON_TEXT, new StartGame());
         menuList.add(startBtn);
         Button settingsBtn = newBtn(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
         menuList.add(settingsBtn);
         Button exitBtn = newBtn(EXIT_BUTTON_TEXT, new ExitApp());
-        menuList.add(exitBtn);
+        menuList.add(exitBtn); */
 
         sizeButtons();
         showList();
@@ -120,9 +134,9 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     }
     //INTERFACE
 
-    private interface ButtonFunction {
+    /*private interface ButtonFunction {
         public void assignFunction();
-    }
+    } */
 
     //Interface Requirements
 
