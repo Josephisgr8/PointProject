@@ -9,6 +9,8 @@ import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
 //import com.example.MenuBackgroundColor.*;
+import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.scene.*;
 import javafx.scene.control.Button;
@@ -17,14 +19,14 @@ import javafx.scene.input.KeyCode;
 public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
 
     final String DONE_BUTTON_TEXT = "Done!";
-    final String BACKGROUND_COLOR_TEXT = "Background Color";
+    final String BACKGROUND_COLOR_TEXT = "Change Theme";
 
     private int scrX;
     private int scrY;
     private MenuController menuController;
     private Stage stage;
-    private ArrayList<Button> settingsList = new ArrayList<Button>();
-    private GameThemeHandler gameThemeHandler;// = new GameThemeHandler();
+    private ArrayList<CustomButton> settingsList = new ArrayList<CustomButton>();
+    //private GameThemeHandler gameThemeHandler;// = new GameThemeHandler();
 
     public SettingsMenu(MenuController mC) {
         super();
@@ -38,9 +40,15 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
     private void createButtons(){
 
         //backgroundcolor button
-        settingsList.add(newBtn(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColor()));
+        //settingsList.add(newBtn(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColor()));
+        CustomButton changeTheme = new CustomButton(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColor());
+        changeTheme.setSubject(menuController.getGameThemeHandler());
+        settingsList.add(changeTheme);
+
         //Done button
-        settingsList.add(newBtn(DONE_BUTTON_TEXT, new ReturnToMenu()));
+        CustomButton doneSettings = new CustomButton(DONE_BUTTON_TEXT, new ReturnToMenu());
+        doneSettings.setSubject(menuController.getGameThemeHandler());
+        settingsList.add(doneSettings);
 
         sizeButtons();
         showList();
@@ -88,15 +96,16 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
         scrX = menuController.getScrX();
         scrY = menuController.getScrY();
         stage = menuController.getStage();
-        gameThemeHandler = menuController.getGameThemeHandler();
+        //gameThemeHandler = menuController.getGameThemeHandler();
     }
 
     //HELPER CLASSES
 
     private class ChangeBackgroundColor implements ButtonFunction{
         public void assignFunction(){
-            stage.getScene().setFill(gameThemeHandler.nextBackgroundColor().getPrimaryColor());
-            menuController.updateBackground(gameThemeHandler);
+            menuController.getGameThemeHandler().nextBackgroundColor();
+            //stage.getScene().setFill(gameThemeHandler.nextBackgroundColor().getPrimaryColor());
+            //menuController.updateBackground(gameThemeHandler);
         }
     }
 
@@ -107,10 +116,10 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
     }
     //INTERFACE
 
-    private interface ButtonFunction {
+    /*private interface ButtonFunction {
         public void assignFunction();
     }
-
+ */
     //Interface Requirements
 
     public void keyStrokeRecieved(KeyCode kC){

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceMenu;
+import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -19,7 +21,7 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
     private int scrX;
     private int scrY;
     private MenuController menuController;
-    private ArrayList<Button> difficultyButtons = new ArrayList<Button>();
+    private ArrayList<CustomButton> difficultyButtons = new ArrayList<CustomButton>();
 
     public GameDifficultyMenu(int X, int Y, MenuController mC){
         super();
@@ -32,29 +34,14 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
 
     private void createBtns(){
         //create buttons
-        Button diff1 = new Button();
-        Button diff2 = new Button();
-        Button diff3 = new Button();
+        CustomButton diff1 = new CustomButton(DIFFICULTY_1_TEXT, new SetDifficultyEasy());
+        CustomButton diff2 = new CustomButton(DIFFICULTY_2_TEXT, new SetDifficultyMedium());
+        CustomButton diff3 = new CustomButton(DIFFICULTY_3_TEXT, new SetDifficultyHard());
 
-        //setup clicking
-        diff1.setOnMouseClicked((e) -> {
-            menuController.difficultyChosen(3);
-        });
+        diff1.setSubject(menuController.getGameThemeHandler());
+        diff2.setSubject(menuController.getGameThemeHandler());
+        diff3.setSubject(menuController.getGameThemeHandler());
 
-        diff2.setOnMouseClicked((e) -> {
-            menuController.difficultyChosen(2);
-        });
-
-        diff3.setOnMouseClicked((e) -> {
-            menuController.difficultyChosen(1);
-        });
-
-        //add text
-        diff1.setText(DIFFICULTY_1_TEXT);
-        diff2.setText(DIFFICULTY_2_TEXT);
-        diff3.setText(DIFFICULTY_3_TEXT);
-
-        //add to list
         difficultyButtons.add(diff1);
         difficultyButtons.add(diff2);
         difficultyButtons.add(diff3);
@@ -75,7 +62,7 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
         }
     }
 
-    private void sizeBtn(Button b){
+    private void sizeBtn(CustomButton b){
         int menuListSizeX = scrX / 2;
         int menuListSizeY = scrY / 2;
 
@@ -84,4 +71,23 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
         b.setTranslateY(menuListSizeY / difficultyButtons.size() * difficultyButtons.indexOf(b) + ((difficultyButtons.indexOf(b)+1) * DIFFICULTY_LIST_SPACER));
         //b.setTranslateY(b.getTranslateY());
     }
+
+    public class SetDifficultyEasy implements ButtonFunction{
+        public void assignFunction(){
+            menuController.difficultyChosen(3);
+        }
+    }
+
+    public class SetDifficultyMedium implements ButtonFunction{
+        public void assignFunction(){
+            menuController.difficultyChosen(2);
+        }
+    }
+
+    public class SetDifficultyHard implements ButtonFunction{
+        public void assignFunction(){
+            menuController.difficultyChosen(1);
+        }
+    }
 }
+

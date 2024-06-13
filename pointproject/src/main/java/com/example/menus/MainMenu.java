@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
+import com.example.helpClasses.ColorPackage;
 import com.example.helpClasses.CustomButton;
 import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.application.Platform;
 
-public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
+public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle, InterfaceThemeObserver{
 
     final String START_BUTTON_TEXT = "Start Game";
     final String SETTINGS_BUTTON_TEXT = "Settings";
@@ -31,6 +34,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
 
     private int scrX;
     private int scrY;
+    private Label titleLabel = new Label(TITLE_TEXT);
     private MenuController menuController;
     private ArrayList<CustomButton> menuList = new ArrayList<CustomButton>();
 
@@ -39,7 +43,8 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         super();
         scrX = X;
         scrY = Y;
-        menuController = mC; 
+        menuController = mC;
+        setSubject(menuController.getGameThemeHandler()); 
 
         createButtons();
         addTitleText();
@@ -49,23 +54,16 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
 
     private void createButtons(){
         CustomButton startBtn = new CustomButton(START_BUTTON_TEXT, new StartGame());
-        startBtn.updateTheme(menuController);
+        startBtn.setSubject(menuController.getGameThemeHandler());
         menuList.add(startBtn);
 
         CustomButton settingsBtn = new CustomButton(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
-        settingsBtn.updateTheme(menuController);
+        settingsBtn.setSubject(menuController.getGameThemeHandler());
         menuList.add(settingsBtn);
 
         CustomButton exitBtn = new CustomButton(EXIT_BUTTON_TEXT, new ExitApp());
-        exitBtn.updateTheme(menuController);
+        exitBtn.setSubject(menuController.getGameThemeHandler());
         menuList.add(exitBtn);
-
-        /*Button startBtn = newBtn(START_BUTTON_TEXT, new StartGame());
-        menuList.add(startBtn);
-        Button settingsBtn = newBtn(SETTINGS_BUTTON_TEXT, new MoveToSettingsPage());
-        menuList.add(settingsBtn);
-        Button exitBtn = newBtn(EXIT_BUTTON_TEXT, new ExitApp());
-        menuList.add(exitBtn); */
 
         sizeButtons();
         showList();
@@ -90,18 +88,17 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     }
 
     private void addTitleText() {
-        Label titleText = new Label(TITLE_TEXT);
-        titleText.setFont(new Font(TITLE_TEXT_FONT_SIZE));
-        titleText.setPrefWidth(TITLE_TEXT_WIDTH);
-        titleText.setTextFill(Color.valueOf("RED"));
-        System.out.println(titleText.getMinWidth());
-        titleText.setTranslateX(scrX/2 - TITLE_TEXT_WIDTH/2);
-        this.getChildren().add(titleText);
+        titleLabel.setFont(new Font(TITLE_TEXT_FONT_SIZE));
+        titleLabel.setPrefWidth(TITLE_TEXT_WIDTH);
+        //titleLabel.setTextFill(Color.valueOf("RED"));
+        System.out.println(titleLabel.getMinWidth());
+        titleLabel.setTranslateX(scrX/2 - TITLE_TEXT_WIDTH/2);
+        this.getChildren().add(titleLabel);
     }
 
     //HELPER FUNCTIONS
 
-    private Button newBtn(String txt){
+    /* private Button newBtn(String txt){
         Button newBtn = new Button(txt);
         return newBtn;
     }
@@ -112,7 +109,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
             fnc.assignFunction();
         });
         return newBtn;
-    }
+    } */
 
     //HELPER CLASSES
     
@@ -132,7 +129,14 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
             menuController.setDifficultyMenu();
         }
     }
-    //INTERFACE
+    //INTERFACE Requirments
+    public void update(ColorPackage cP){
+        titleLabel.setTextFill(cP.getSecondaryColor());
+    }
+
+    public void setSubject(InterfaceThemeSubject sub){
+        sub.register(this);
+    }
 
     /*private interface ButtonFunction {
         public void assignFunction();

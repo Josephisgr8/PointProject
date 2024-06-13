@@ -1,6 +1,8 @@
 package com.example.helpClasses;
 
 import com.example.MenuController;
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -8,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-public class CustomButton extends Group {
+public class CustomButton extends Group implements InterfaceThemeObserver {
 
     final int BUTTON_BORDER_PERCENT = 4; // EVEN SO NOT OFF-CENTER
 
@@ -28,12 +30,14 @@ public class CustomButton extends Group {
         this.setOnMouseClicked( (e) -> {
             func.assignFunction();
         });
+
+
     }   
 
-    public void updateTheme(MenuController menuController){
+    /*public void updateTheme(MenuController menuController){
         btnInner.setFill(menuController.getBackgroundColor().getPrimaryColor());
         btnOuter.setFill(menuController.getBackgroundColor().getSecondaryColor());
-    }
+    } */
 
     public void setPrefSize(int x, int y){
         int actualBorderX = x * BUTTON_BORDER_PERCENT/100;
@@ -57,7 +61,16 @@ public class CustomButton extends Group {
         //this.prefHeight(y);
     }
 
+    //ThemeObserver Interface Requirements
 
+    public void update(ColorPackage cP){
+        btnInner.setFill(cP.getPrimaryColor());
+        btnOuter.setFill(cP.getSecondaryColor());
+    }
+
+    public void setSubject(InterfaceThemeSubject sub){
+        sub.register(this);
+    }
 
 
 

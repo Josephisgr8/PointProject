@@ -2,6 +2,10 @@ package com.example.menus.gamemenu;
 
 import java.util.ArrayList;
 
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
+import com.example.helpClasses.ColorPackage;
+
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
@@ -10,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-public class GameTile extends Group{
+public class GameTile extends Group implements InterfaceThemeObserver{
 
     final int TILE_THICKNESS = 5;
     final static Color TILE_COLOR = Color.WHITE;
@@ -139,4 +143,14 @@ public class GameTile extends Group{
         this.getChildren().add(innerRect);
     }
 
+    //INTERFACE REQUIREMENTS
+    public void update(ColorPackage cP){
+        innerRect.setFill(cP.getPrimaryColor());
+        outerRect.setFill(cP.getSecondaryColor());
+        label.setTextFill(cP.getSecondaryColor());
+    }
+
+    public void setSubject(InterfaceThemeSubject sub){
+        sub.register(this);
+    }
 }

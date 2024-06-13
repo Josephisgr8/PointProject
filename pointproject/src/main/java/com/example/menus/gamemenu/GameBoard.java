@@ -5,6 +5,9 @@ import java.util.Random;
 
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
+import com.example.helpClasses.ColorPackage;
 
 import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
@@ -69,6 +72,8 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
                     currTile.setYLoc(YLoc);
                 }
                 gameTiles.add(currTile);
+
+                currTile.setSubject(menuController.getGameThemeHandler());
             }   
         }
         generateBoardValues();

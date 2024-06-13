@@ -4,6 +4,8 @@ package com.example;
 import java.util.ArrayList;
 
 import com.example.Interfaces.InterfaceMenu;
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
 import com.example.menus.GameDifficultyMenu;
 import com.example.menus.MainMenu;
 import com.example.menus.SettingsMenu;
@@ -18,11 +20,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-public class MenuController {
+public class MenuController implements InterfaceThemeObserver {
 
+    private GameThemeHandler gameThemeHandler = new GameThemeHandler();
     private MainMenu mainMenu;
     private SettingsMenu settingsMenu;
-    private GameThemeHandler gameThemeHandler = new GameThemeHandler();
     private GameDifficultyMenu gameDifficultyMenu;
     private GameMenu gameMenu;
     private GameBoard gameBoard;
@@ -44,6 +46,7 @@ public class MenuController {
         createPages();
         stage.setScene(new Scene(mainMenu));    //start on Main Menu
         createKeyEventHandler();
+        this.setSubject(gameThemeHandler);
         
     }
 
@@ -69,9 +72,9 @@ public class MenuController {
         setMenu(menuAccessList.get(menuAccessList.size()-1));
     }
 
-    public ColorPackage getBackgroundColor(){
+    /*public ColorPackage getBackgroundColor(){
         return gameThemeHandler.getTheme();
-    }
+    } */
 
     public int getScrX(){
         return scrX;
@@ -88,7 +91,8 @@ public class MenuController {
     public GameThemeHandler getGameThemeHandler(){
         return gameThemeHandler;
     }
-    //--------------------
+
+    //-----------------------------
 
     public void updateBackground(GameThemeHandler mbc){ //to keep the MenuController's gameThemeHandler up to date
         gameThemeHandler = mbc;
@@ -128,6 +132,16 @@ public class MenuController {
         stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (key) ->{
             currMenu().keyStrokeRecieved(key.getCode());
         });
+    }
+
+
+    //Interface Requirements
+    public void update(ColorPackage cP){
+        stage.getScene().setFill(cP.getAccentingColor());
+    }
+
+    public void setSubject(InterfaceThemeSubject sub){
+        sub.register(this);
     }
 
 }

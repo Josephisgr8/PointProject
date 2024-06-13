@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.Interfaces.InterfaceThemeObserver;
+import com.example.Interfaces.InterfaceThemeSubject;
 import com.example.helpClasses.ColorPackage;
 
 import java.util.ArrayList;
@@ -7,12 +9,13 @@ import java.util.ArrayList;
 import javafx.scene.paint.Color;
 
 
-public class GameThemeHandler {
+public class GameThemeHandler implements InterfaceThemeSubject {
 
     private ArrayList<Color> primColors = new ArrayList<Color>();
     private ArrayList<Color> secColors = new ArrayList<Color>();
+    private ArrayList<Color> accColors = new ArrayList<Color>();
     private int currIndex;
-
+    private ArrayList<InterfaceThemeObserver> observerList = new ArrayList<InterfaceThemeObserver>();
     public GameThemeHandler(){
         currIndex = 0;
         addThemesToList();
@@ -23,28 +26,45 @@ public class GameThemeHandler {
         if (currIndex >= primColors.size()){
             currIndex = 0;
         }
+        notifyObservers();
         return getTheme();
     }
 
     public ColorPackage getTheme(){
-        return new ColorPackage(primColors.get(currIndex), secColors.get(currIndex));
+        return new ColorPackage(primColors.get(currIndex), secColors.get(currIndex), accColors.get(currIndex));
     }
 
 
     //PRIVATE FUNCTIONS
 
     private void addThemesToList(){
-        addTheme(Color.WHITE, Color.BLACK);
-        addTheme(Color.LAVENDERBLUSH, Color.LAVENDER);
-        addTheme(Color.LIGHTCORAL, Color.LIGHTPINK);
-        addTheme(Color.LIGHTGOLDENRODYELLOW, Color.LIGHTCYAN);
-        addTheme(Color.MEDIUMAQUAMARINE, Color.MIDNIGHTBLUE);
+        //Light, Dark, Light
+        addTheme(Color.WHITE, Color.BLACK, Color.GRAY);
+        addTheme(Color.LAVENDER, Color.MEDIUMPURPLE, Color.LAVENDERBLUSH);
+        addTheme(Color.LIGHTCORAL, Color.LIGHTPINK, Color.LIGHTSALMON);
+        addTheme(Color.LIGHTGOLDENRODYELLOW, Color.LIGHTCYAN, Color.LIGHTSLATEGRAY);
+        addTheme(Color.MEDIUMAQUAMARINE, Color.MIDNIGHTBLUE, Color.MEDIUMBLUE);
         //colorPackage.addTheme(Color.WHITE, Color.BLACK);
     }
 
-    private void addTheme(Color p, Color s){
+    private void addTheme(Color p, Color s, Color a){
         primColors.add(p);
         secColors.add(s);
+        accColors.add(a);
+    }
+
+    //INTERFACE REQUIREMENTS
+    public void register(InterfaceThemeObserver obs){
+        if (!observerList.contains(obs)) {
+            observerList.add(obs);
+            obs.update(getTheme()); //if observer is added, update it
+        }
+    }
+
+    public void notifyObservers(){
+        observerList.forEach( (e) -> {
+            e.update(getTheme());
+        });
     }
 
 }
