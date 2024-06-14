@@ -5,8 +5,6 @@ import java.util.Random;
 
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
-import com.example.Interfaces.InterfaceThemeObserver;
-import com.example.Interfaces.InterfaceThemeSubject;
 import com.example.helpClasses.ColorPackage;
 
 import javafx.scene.Group;
@@ -15,15 +13,16 @@ import javafx.scene.input.KeyCode;
 public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
     final static int BOARD_SIZE = 9; //MUST BE DIVISIBLE BY 3
-    final int BOARD_PADDING = 2;//MEASURED IN TILES
-    final int BOARD_DIFFICULTY_MODIFIER = 3; //higher is easier
-    final int SQUARE_SPACING = 10; 
+    final static int BOARD_PADDING = 2;//MEASURED IN TILES
+    //final int BOARD_DIFFICULTY_MODIFIER = 3; //higher is easier
+    final static int SQUARE_SPACING = 10; 
 
     private MenuController menuController;
     private ArrayList<GameTile> gameTiles = new ArrayList<GameTile>();
     private GameTile selectedTile;
-    private int tileSize;
     private int difficultyModifier;
+
+    public int tileSize;
 
     public GameBoard(MenuController mC, int dM){
         super();
@@ -104,6 +103,10 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             n.tileValueState.removePossibleValue(gt.getValue());
             n.updateLabel();
         });
+    }
+
+    public ColorPackage getCurrTheme(){ //gets the current theme. Used to allow GameTiles to access the theme
+        return menuController.getGameThemeHandler().getTheme();
     }
 
     //Interface Requirements
@@ -332,8 +335,6 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             hiddenTiles.get(i).possibleValues = new ArrayList<Integer>(possibleValues);
 
         }
-
-        //now loop through hidden tiles again, and when you find one that has only 1 possible value, you will 
 
         boolean changeMade = true;
         while (changeMade){

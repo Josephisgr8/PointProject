@@ -13,6 +13,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private int scrY;
     private MenuController menuController;
     private GameBoard gameBoard;
+    private GameTips gameTips;
     //private ArrayList<ArrayList> gameTileRowList = new ArrayList<ArrayList>();
 
 
@@ -26,6 +27,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
 
         createBoard();
         showBoard();  
+        createTips();
     }
     
     private void createBoard(){
@@ -44,6 +46,13 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private void showBoard(){
         gameBoard.showBoard();
         this.getChildren().add(gameBoard);
+    }
+
+    private void createTips(){
+        gameTips = new GameTips(gameBoard.tileSize, menuController);
+        gameTips.setSubject(menuController.getGameThemeHandler());
+        this.getChildren().add(gameTips);
+        //gameTips.setBorderSize()
     }
 
     //Interface Requirements

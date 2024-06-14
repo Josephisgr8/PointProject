@@ -16,7 +16,7 @@ import javafx.scene.text.Font;
 
 public class GameTile extends Group implements InterfaceThemeObserver{
 
-    final int TILE_THICKNESS = 5;
+    final static int TILE_THICKNESS = 6;
     final static Color TILE_COLOR = Color.WHITE;
     final static Color TILE_BORDER_COLOR = Color.BLACK;
     final static Color TILE_SELECT_GUESS_BORDER_COLOR = Color.RED;
@@ -78,23 +78,8 @@ public class GameTile extends Group implements InterfaceThemeObserver{
         return realValue;
     }
 
-    private void tileClicked(MouseEvent e){
-        if (e.getButton() == MouseButton.SECONDARY) {
-            //System.out.println("tile right clicked");
-            tileSelectState = tileSelectState.tileRightClicked();
-            label = tileSelectState.updateLabel(label, tileValueState);
-        }
-        else if (e.getButton() == MouseButton.PRIMARY){
-            //System.out.println("tile left clicked");
-            tileSelectState = tileSelectState.tileLeftClicked();
-            label = tileSelectState.updateLabel(label, tileValueState);
-        }
-
-        gameBoard.tileClicked(this);
-    }
-
     public void unSelect(){
-        tileSelectState = tileSelectState.unselect();        
+        tileSelectState = tileSelectState.unselect(gameBoard.getCurrTheme());        
     }
 
     public void changeLabelState(){
@@ -116,10 +101,10 @@ public class GameTile extends Group implements InterfaceThemeObserver{
 
     public void tileMovedTo(GameTileSelectState gtss){
         if (gtss instanceof GameTileSelectStateGuess){
-            this.tileSelectState = new GameTileSelectStateGuess(outerRect);
+            this.tileSelectState = new GameTileSelectStateGuess(outerRect, gameBoard.getCurrTheme());
         }
         else{
-            this.tileSelectState = new GameTileSelectStatePossibility(outerRect);
+            this.tileSelectState = new GameTileSelectStatePossibility(outerRect, gameBoard.getCurrTheme());
         }
         gameBoard.tileClicked(this);
     }
@@ -127,6 +112,10 @@ public class GameTile extends Group implements InterfaceThemeObserver{
     public void updateLabel(){
         label = tileValueState.updateLabel();
     }
+
+    /* public void makeUnclickable(){
+        this.setDisabled(true);
+    } */
     
     //Private Functions
 
@@ -141,6 +130,21 @@ public class GameTile extends Group implements InterfaceThemeObserver{
         innerRect.setFill(TILE_COLOR);
         this.getChildren().add(outerRect);
         this.getChildren().add(innerRect);
+    }
+
+    private void tileClicked(MouseEvent e){
+        if (e.getButton() == MouseButton.SECONDARY) {
+            //System.out.println("tile right clicked");
+            tileSelectState = tileSelectState.tileRightClicked(gameBoard.getCurrTheme());
+            label = tileSelectState.updateLabel(label, tileValueState);
+        }
+        else if (e.getButton() == MouseButton.PRIMARY){
+            //System.out.println("tile left clicked");
+            tileSelectState = tileSelectState.tileLeftClicked(gameBoard.getCurrTheme());
+            label = tileSelectState.updateLabel(label, tileValueState);
+        }
+
+        gameBoard.tileClicked(this);
     }
 
     //INTERFACE REQUIREMENTS
