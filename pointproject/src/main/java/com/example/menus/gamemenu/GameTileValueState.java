@@ -107,7 +107,7 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
     public void removePossibleValue(int i){
         if (possibleValues.contains(i)){
             //possibleValues.remove(possibleValues.indexOf(i));
-            possibleValue(i);
+            possibleValue(i); //we use a function we already made that will accomplish the same thing
         }
     }
 }

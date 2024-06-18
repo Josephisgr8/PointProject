@@ -43,7 +43,7 @@ public class GameThemeHandler implements InterfaceThemeSubject {
         //Light, Dark, Light, Dark, Dark
         addTheme(Color.WHITE, Color.BLACK, Color.GRAY, Color.BURLYWOOD, Color.TOMATO);
         addTheme(Color.LAVENDER, Color.MEDIUMPURPLE, Color.LAVENDERBLUSH, Color.NAVY, Color.SEAGREEN);
-        addTheme(Color.LIGHTPINK, Color.LIGHTCORAL, Color.LIGHTSKYBLUE, Color.LAWNGREEN, Color.MAROON);
+        addTheme(Color.LIGHTPINK, Color.MEDIUMORCHID, Color.LIGHTSKYBLUE, Color.LAWNGREEN, Color.MAROON);
         addTheme(Color.LIGHTGOLDENRODYELLOW, Color.LIGHTSLATEGRAY, Color.LIGHTCYAN, Color.INDIGO, Color.FIREBRICK);
         addTheme(Color.MEDIUMAQUAMARINE, Color.MIDNIGHTBLUE, Color.PALETURQUOISE, Color.OLIVEDRAB, Color.THISTLE);
         //colorPackage.addTheme(Color.WHITE, Color.BLACK);

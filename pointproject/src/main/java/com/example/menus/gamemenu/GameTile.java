@@ -89,8 +89,9 @@ public class GameTile extends Group implements InterfaceThemeObserver{
 
     public void valueTyped(int i){
         label = this.tileSelectState.valueTyped(i, tileValueState);
-        if (tileValueState.getWasGuessedRight()){
+        if (tileValueState.getWasGuessedRight() && tileValueState instanceof GameTileValueStateHidden){
             System.out.println("tile guessed right");
+            tileValueState = tileValueState.nextState();
             gameBoard.removePossibleTileValues(this);
         }
         //this.tileValueState.valueTyped(i);
@@ -149,9 +150,11 @@ public class GameTile extends Group implements InterfaceThemeObserver{
 
     //INTERFACE REQUIREMENTS
     public void update(ColorPackage cP){
-        innerRect.setFill(cP.getPrimaryColor());
-        outerRect.setFill(cP.getSecondaryColor());
-        label.setTextFill(cP.getSecondaryColor());
+        if (this.label != null){
+            innerRect.setFill(cP.getPrimaryColor());
+            outerRect.setFill(cP.getSecondaryColor());
+            label.setTextFill(cP.getSecondaryColor());
+        }
     }
 
     public void setSubject(InterfaceThemeSubject sub){
