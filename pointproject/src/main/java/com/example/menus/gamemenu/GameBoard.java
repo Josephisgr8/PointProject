@@ -105,12 +105,24 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         });
     }
 
+    public void wrongValueGuessed(){
+        menuController.removeLife();
+    }
+
+    public void disableEvents(){
+        gameTiles.forEach( (n) -> {
+            n.setDisable(true);
+        });
+        this.setDisable(true);
+    }
+
     public ColorPackage getCurrTheme(){ //gets the current theme. Used to allow GameTiles to access the theme
         return menuController.getGameThemeHandler().getTheme();
     }
 
     //Interface Requirements
     public void keyStrokeRecieved(KeyCode kC){
+        if (this.isDisable()) {return;}
         switch (kC) {
             case A:
                 moveLeft();

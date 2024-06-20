@@ -18,6 +18,7 @@ import com.example.Interfaces.InterfaceThemeObserver;
 import com.example.Interfaces.InterfaceThemeSubject;
 import com.example.helpClasses.ColorPackage;
 import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.ListElement;
 import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.application.Platform;
@@ -36,7 +37,7 @@ public class MainMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private int scrY;
     private Label titleLabel = new Label(TITLE_TEXT);
     private MenuController menuController;
-    private ArrayList<CustomButton> menuList = new ArrayList<CustomButton>();
+    private ArrayList<ListElement> menuList = new ArrayList<ListElement>();
 
     
     public MainMenu(int X, int Y, MenuController mC){

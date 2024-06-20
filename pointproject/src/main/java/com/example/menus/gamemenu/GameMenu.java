@@ -23,6 +23,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         scrX = X;
         scrY = Y;
         menuController = mC;
+        menuController.resetLives();
         gameBoard = gB;
 
         createBoard();

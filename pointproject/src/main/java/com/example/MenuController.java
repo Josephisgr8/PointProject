@@ -7,6 +7,7 @@ import com.example.Interfaces.InterfaceMenu;
 import com.example.Interfaces.InterfaceThemeObserver;
 import com.example.Interfaces.InterfaceThemeSubject;
 import com.example.menus.GameDifficultyMenu;
+import com.example.menus.GameOverMenu;
 import com.example.menus.MainMenu;
 import com.example.menus.SettingsMenu;
 import com.example.menus.gamemenu.GameBoard;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 
 public class MenuController implements InterfaceThemeObserver {
+    final static int NUMBER_OF_STARTING_LIVES = 3;
 
     private GameThemeHandler gameThemeHandler = new GameThemeHandler();
     private MainMenu mainMenu;
@@ -32,7 +34,9 @@ public class MenuController implements InterfaceThemeObserver {
 
     private int scrX;
     private int scrY;
+    private int numOfLives;
     private Stage stage;
+    private int gameDifficulty;
     //private InterfaceMenu prevMenu;
     //private InterfaceMenu currMenu;
     private ArrayList<InterfaceMenu> menuAccessList = new ArrayList<InterfaceMenu>();
@@ -47,6 +51,7 @@ public class MenuController implements InterfaceThemeObserver {
         stage.setScene(new Scene(mainMenu));    //start on Main Menu
         createKeyEventHandler();
         this.setSubject(gameThemeHandler);
+        numOfLives = NUMBER_OF_STARTING_LIVES;
         
     }
 
@@ -65,6 +70,10 @@ public class MenuController implements InterfaceThemeObserver {
 
     public void setGameMenu(){
         setMenu(gameMenu);
+    }
+
+    public void setGameOverMenu(int wol){
+        stage.getScene().setRoot((new GameOverMenu(this, gameBoard, wol)));
     }
 
     public void goToPrevMenu(){
@@ -100,9 +109,25 @@ public class MenuController implements InterfaceThemeObserver {
 
     public void difficultyChosen(int i){
         //DIFFICULTY SELECTED SO CREATE GAMEBOARD AND GAME MENU
-        gameBoard = new GameBoard(this, i);
+        gameDifficulty = i;
+        gameBoard = new GameBoard(this, gameDifficulty);
         gameMenu = new GameMenu(scrX, scrY, this, gameBoard);
         setGameMenu();
+    }
+
+    public void removeLife(){
+        numOfLives -= 1;
+        if (numOfLives == 0) {
+            setGameOverMenu(0);
+        }
+    }
+
+    public void resetLives(){
+        numOfLives = NUMBER_OF_STARTING_LIVES;
+    }
+
+    public void resetMenus(){
+        menuAccessList.clear();
     }
 
     //Private functions

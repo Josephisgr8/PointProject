@@ -154,7 +154,7 @@ class GameTileValueStateShown extends GameTileValueState{
     }
 
     public void guessedValue(int i){
-        
+
     }
 
     public Label possibleValue(int i){

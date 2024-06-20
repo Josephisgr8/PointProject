@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceMenu;
 import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.ListElement;
 import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.scene.Group;
@@ -16,12 +17,11 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
     final String DIFFICULTY_1_TEXT = "Easy";
     final String DIFFICULTY_2_TEXT = "Medium";
     final String DIFFICULTY_3_TEXT = "Hard";
-    final int DIFFICULTY_LIST_SPACER = 10;
 
     private int scrX;
     private int scrY;
     private MenuController menuController;
-    private ArrayList<CustomButton> difficultyButtons = new ArrayList<CustomButton>();
+    private ArrayList<ListElement> difficultyButtons = new ArrayList<ListElement>();
 
     public GameDifficultyMenu(int X, int Y, MenuController mC){
         super();
@@ -46,8 +46,8 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
         difficultyButtons.add(diff2);
         difficultyButtons.add(diff3);
 
+        sizeBtns();
         difficultyButtons.forEach( (n) -> {
-            sizeBtn(n);
             this.getChildren().add(n);
         });
     }
@@ -62,13 +62,19 @@ public class GameDifficultyMenu extends Group implements InterfaceMenu{
         }
     }
 
-    private void sizeBtn(CustomButton b){
-        int menuListSizeX = scrX / 2;
+    private void sizeBtns(){
+        int menuListSizeX = scrX / 4;
         int menuListSizeY = scrY / 2;
 
-        b.setPrefSize(menuListSizeX, menuListSizeY / (difficultyButtons.size()));
+        difficultyButtons.forEach( (n) -> {
+            n.setPrefSize(menuListSizeX, menuListSizeY / (difficultyButtons.size()+1));
+            n.setTranslateX(scrX / 2 - menuListSizeX / 2);
+            n.setTranslateY(menuListSizeY / difficultyButtons.size() * (difficultyButtons.indexOf(n)) + (scrY / 2 - menuListSizeY / 2));
+        });
+
+        /*b.setPrefSize(menuListSizeX, menuListSizeY / (difficultyButtons.size()));
         b.setTranslateX(scrX/2 - menuListSizeX/2);
-        b.setTranslateY(menuListSizeY / difficultyButtons.size() * difficultyButtons.indexOf(b) + ((difficultyButtons.indexOf(b)+1) * DIFFICULTY_LIST_SPACER));
+        b.setTranslateY(menuListSizeY / difficultyButtons.size() * difficultyButtons.indexOf(b) + ((difficultyButtons.indexOf(b)+1) * DIFFICULTY_LIST_SPACER)); */
         //b.setTranslateY(b.getTranslateY());
     }
 

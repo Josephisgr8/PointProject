@@ -89,8 +89,11 @@ public class GameTile extends Group implements InterfaceThemeObserver{
 
     public void valueTyped(int i){
         label = this.tileSelectState.valueTyped(i, tileValueState);
+        if (!this.tileValueState.getWasGuessedRight() && this.tileSelectState instanceof GameTileSelectStateGuess){ //you made a wrong guess, and the tile was not in the wrong state
+            gameBoard.wrongValueGuessed();
+        }
         if (tileValueState.getWasGuessedRight() && tileValueState instanceof GameTileValueStateHidden){
-            System.out.println("tile guessed right");
+            //System.out.println("tile guessed right");
             tileValueState = tileValueState.nextState();
             gameBoard.removePossibleTileValues(this);
         }
