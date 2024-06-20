@@ -10,6 +10,8 @@ import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
 //import com.example.MenuBackgroundColor.*;
 import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.CustomButtonWithArrows;
+import com.example.helpClasses.ListElement;
 import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.scene.*;
@@ -25,7 +27,7 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
     private int scrY;
     private MenuController menuController;
     private Stage stage;
-    private ArrayList<CustomButton> settingsList = new ArrayList<CustomButton>();
+    private ArrayList<ListElement> settingsList = new ArrayList<ListElement>();
     //private GameThemeHandler gameThemeHandler;// = new GameThemeHandler();
 
     public SettingsMenu(MenuController mC) {
@@ -41,7 +43,7 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
 
         //backgroundcolor button
         //settingsList.add(newBtn(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColor()));
-        CustomButton changeTheme = new CustomButton(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColor());
+        CustomButtonWithArrows changeTheme = new CustomButtonWithArrows(BACKGROUND_COLOR_TEXT, new ChangeBackgroundColorPrev(), new ChangeBackgroundColorNext());
         changeTheme.setSubject(menuController.getGameThemeHandler());
         settingsList.add(changeTheme);
 
@@ -75,19 +77,6 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
 
     //HELPER FUNCTIONS
 
-    private Button newBtn(String txt){
-        Button newBtn = new Button(txt);
-        return newBtn;
-    }
-
-    private Button newBtn(String txt, ButtonFunction fnc){
-        Button newBtn = new Button(txt);
-        newBtn.setOnMouseClicked( e-> {
-            fnc.assignFunction();
-        });
-        return newBtn;
-    }
-
     private void moveToMainMenu(){
         menuController.setMainMenu();
     }
@@ -101,7 +90,15 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
 
     //HELPER CLASSES
 
-    private class ChangeBackgroundColor implements ButtonFunction{
+    private class ChangeBackgroundColorPrev implements ButtonFunction{
+        public void assignFunction(){
+            menuController.getGameThemeHandler().prevBackgroundColor();
+            //stage.getScene().setFill(gameThemeHandler.nextBackgroundColor().getPrimaryColor());
+            //menuController.updateBackground(gameThemeHandler);
+        }
+    }
+
+    private class ChangeBackgroundColorNext implements ButtonFunction{
         public void assignFunction(){
             menuController.getGameThemeHandler().nextBackgroundColor();
             //stage.getScene().setFill(gameThemeHandler.nextBackgroundColor().getPrimaryColor());

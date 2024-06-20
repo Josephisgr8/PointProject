@@ -10,9 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
-public class CustomButton extends Group implements InterfaceThemeObserver {
+public class CustomButton extends ListElement implements InterfaceThemeObserver {
 
-    final int BUTTON_BORDER_PERCENT = 4; // EVEN SO NOT OFF-CENTER
+    final static int BUTTON_BORDER_PERCENT = 4; // EVEN SO NOT OFF-CENTER
 
     private Rectangle btnInner;
     private Rectangle btnOuter;

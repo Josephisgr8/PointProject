@@ -32,6 +32,15 @@ public class GameThemeHandler implements InterfaceThemeSubject {
         return getTheme();
     }
 
+    public ColorPackage prevBackgroundColor() {
+        currIndex -= 1;
+        if (currIndex < 0){
+            currIndex = primColors.size()-1;
+        }
+        notifyObservers();
+        return getTheme();
+    }
+
     public ColorPackage getTheme(){
         return new ColorPackage(primColors.get(currIndex), secColors.get(currIndex), accColors.get(currIndex), primSelColors.get(currIndex), secSelColors.get(currIndex));
     }
