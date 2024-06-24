@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 
 public class MenuController implements InterfaceThemeObserver {
-    final static int NUMBER_OF_STARTING_LIVES = 3;
+    public final static int NUMBER_OF_STARTING_LIVES = 3;
 
     private GameThemeHandler gameThemeHandler = new GameThemeHandler();
     private MainMenu mainMenu;
@@ -117,6 +117,7 @@ public class MenuController implements InterfaceThemeObserver {
 
     public void removeLife(){
         numOfLives -= 1;
+        gameMenu.updateLives(numOfLives);
         if (numOfLives == 0) {
             setGameOverMenu(0);
         }

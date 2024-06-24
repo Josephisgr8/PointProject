@@ -17,7 +17,7 @@ import javafx.scene.text.Font;
 public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We don't want to implement interfaceMenu because the player could then go back to the gameMenu from the gameOver screen
 
     final static String BACK_TO_MAIN_MENU_BUTTON_TEXT = "Return to main menu";
-    final static String LOSS_END_GAME_TEXT = "You have lossed the game.";
+    final static String LOSS_END_GAME_TEXT = "You have failed to complete the game.";
 
     private MenuController menuController;
     private GameBoard gameBoard;
