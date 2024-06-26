@@ -56,6 +56,8 @@ public class GameThemeHandler implements InterfaceThemeSubject {
         addTheme(Color.LIGHTGOLDENRODYELLOW, Color.LIGHTSLATEGRAY, Color.LIGHTCYAN, Color.INDIGO, Color.FIREBRICK);
         addTheme(Color.MEDIUMAQUAMARINE, Color.MIDNIGHTBLUE, Color.PALETURQUOISE, Color.OLIVEDRAB, Color.THISTLE);
         //colorPackage.addTheme(Color.WHITE, Color.BLACK);
+
+        //CANNOT USE RED HERE^ IT IS USED FOR WRONG GUESSES
     }
 
     private void addTheme(Color p, Color s, Color a, Color ps, Color ss){
