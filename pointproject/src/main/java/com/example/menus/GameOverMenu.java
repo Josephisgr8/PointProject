@@ -8,6 +8,7 @@ import com.example.helpClasses.ColorPackage;
 import com.example.helpClasses.CustomButton;
 import com.example.helpClasses.CustomButton.ButtonFunction;
 import com.example.menus.gamemenu.GameBoard;
+import com.example.menus.gamemenu.GameTimer;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -21,22 +22,25 @@ public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We 
 
     private MenuController menuController;
     private GameBoard gameBoard;
+    private GameTimer gameTimer;
     private int winOrLoss;
     private Label endGameInfo;
     private CustomButton mainMenuButton;
 
-    public GameOverMenu(MenuController mC, GameBoard gB, int wol){
+    public GameOverMenu(MenuController mC, GameBoard gB, GameTimer tim, int wol){
         menuController = mC;
         gameBoard = gB;
+        gameTimer = tim;
         winOrLoss = wol;
         endGameInfo = new Label();
 
         createButton();
         createLabel();
 
-        this.getChildren().addAll(gameBoard, endGameInfo, mainMenuButton);
+        this.getChildren().addAll(gameBoard, gameTimer, endGameInfo, mainMenuButton);
 
         gameBoard.disableEvents();
+        gameTimer.stopTimer();
     }
 
 

@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventHandle{
 
     final static int LIVES_CONTAINER_RATIO = 5; // 1/this of the screen will be dedicated to the lives contatiner
+    final static int GAME_TIMER_HEIGHT_RATIO = 10; // 1/this of the screen will be dedicated to the timer;
     final static int WRONG_GUESS_DISPLAY_TIME = 500; //time the big red X will show on screen after a wrong guess in milliseconds
     final static String LIVES_TEXT = "Lives";
     final static Color WRONG_GUESS_COLOR = Color.RED;
@@ -28,7 +29,9 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private GameBoard gameBoard;
     private GameTips gameTips;
     private GameLivesIndicator gameLivesIndicator;
+    private GameTimer gameTimer;
     private Group wrongGuessX;
+    private Timer wrongGuessTimer;
 
 
     public GameMenu(int X, int Y, MenuController mC, GameBoard gB){
@@ -44,15 +47,22 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         showBoard();  
         createTips();
         createLives();
+        createTimer();
     }
 
     public void updateLives(int i){ //This is called when a life is rmeoved
         gameLivesIndicator.updateLives(i);
 
         createWrongGuessX();
-        Timer wrongGuessTimer = new Timer(true); //created as Daemon thread so that it will shutdonw when the application stops
+        wrongGuessTimer = new Timer(true); //created as Daemon thread so that it will shutdonw when the application stops
         wrongGuessTimer.schedule(new WrongGuessTimerTask(), WRONG_GUESS_DISPLAY_TIME);
 
+    }
+
+    //Accessors
+
+    public GameTimer getGameTimer(){
+        return gameTimer;
     }
 
     //private functions
@@ -91,7 +101,20 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         
     }
 
+    private void createTimer(){
+        gameTimer = new GameTimer(scrX / (GAME_TIMER_HEIGHT_RATIO / 2), scrY / GAME_TIMER_HEIGHT_RATIO);
+        gameTimer.setSubject(menuController.getGameThemeHandler());
+        gameTimer.setTranslateX(scrX / 2);
+        gameTimer.setTranslateY(scrY - 3 * gameTimer.getMaxHeight());
+        this.getChildren().add(gameTimer);
+        gameTimer.startTimer();
+    }
+
     private void createWrongGuessX(){
+        if (wrongGuessX != null && this.getChildren().contains(wrongGuessX)){
+            this.getChildren().remove(wrongGuessX);
+            wrongGuessTimer.cancel();
+        }
         wrongGuessX = new Group();
         Rectangle r1 = new Rectangle();
 

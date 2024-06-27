@@ -73,7 +73,7 @@ public class MenuController implements InterfaceThemeObserver {
     }
 
     public void setGameOverMenu(int wol){
-        stage.getScene().setRoot((new GameOverMenu(this, gameBoard, wol)));
+        stage.getScene().setRoot((new GameOverMenu(this, gameBoard, gameMenu.getGameTimer(), wol)));
     }
 
     public void goToPrevMenu(){
