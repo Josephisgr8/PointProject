@@ -30,6 +30,7 @@ public class MenuController implements InterfaceThemeObserver {
     private GameDifficultyMenu gameDifficultyMenu;
     private GameMenu gameMenu;
     private GameBoard gameBoard;
+    private GameOverMenu gameOverMenu;
    // private MusicController musicController;
 
     private int scrX;
@@ -73,7 +74,9 @@ public class MenuController implements InterfaceThemeObserver {
     }
 
     public void setGameOverMenu(int wol){
-        stage.getScene().setRoot((new GameOverMenu(this, gameBoard, gameMenu.getGameTimer(), wol)));
+        gameOverMenu = new GameOverMenu(this, gameBoard, gameMenu.getGameTimer(), wol);
+        stage.getScene().setRoot(gameOverMenu);
+        gameOverMenu.setSubject(gameThemeHandler);
     }
 
     public void goToPrevMenu(){

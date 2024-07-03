@@ -58,7 +58,6 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         wrongGuessTimer.schedule(new WrongGuessTimerTask(), WRONG_GUESS_DISPLAY_TIME);
 
     }
-
     //Accessors
 
     public GameTimer getGameTimer(){

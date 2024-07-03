@@ -20,7 +20,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
     private MenuController menuController;
     private ArrayList<GameTile> gameTiles = new ArrayList<GameTile>();
     private GameTile selectedTile;
-    private int difficultyModifier;
+    private int difficultyModifier, numOfHiddenTiles;
 
     public int tileSize;
 
@@ -28,7 +28,7 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
         super();
         menuController = mC;
         difficultyModifier = dM;
-
+        numOfHiddenTiles = 0;
     }
 
     public void setTileSize(int minScrLength){
@@ -107,6 +107,13 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
 
     public void wrongValueGuessed(){
         menuController.removeLife();
+    }
+
+    public void correctValueGuessed(){
+        numOfHiddenTiles--;
+        if (numOfHiddenTiles == 0){
+            menuController.setGameOverMenu(1);
+        }
     }
 
     public void disableEvents(){
@@ -314,8 +321,10 @@ public class GameBoard extends Group implements InterfaceKeyEventHandle{
             Random rng = new Random();
             if (rng.nextInt(difficultyModifier) != 0){continue;} // 1 in BOARD_DIFFICULTY_MODIFIER tiles will be possbily hidden
             gameTiles.get(i).changeLabelState();
+            numOfHiddenTiles++;
             if (!boardSolvable()){
                 gameTiles.get(i).changeLabelState();
+                numOfHiddenTiles--;
             }
         }
     } 

@@ -19,6 +19,7 @@ public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We 
 
     final static String BACK_TO_MAIN_MENU_BUTTON_TEXT = "Return to main menu";
     final static String LOSS_END_GAME_TEXT = "You have failed to complete the game.";
+    final static String WIN_END_GAME_TEXT = "You have completed the game. Congrats!";
 
     private MenuController menuController;
     private GameBoard gameBoard;
@@ -41,7 +42,8 @@ public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We 
 
         gameBoard.disableEvents();
         gameTimer.stopTimer();
-    }
+        //update(menuController.getGameThemeHandler().getTheme()); //This is needed because this object is created AFTER the GameThemeHandler
+    }   
 
 
 
@@ -60,14 +62,16 @@ public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We 
     }
 
     private void createLabel(){
+        endGameInfo.setMaxWidth(menuController.getScrX()/2);
+        endGameInfo.setFont(new Font(menuController.getScrY() / 20));
+        endGameInfo.setWrapText(true);
+        endGameInfo.setTranslateX(menuController.getScrX() / 2);
         if (winOrLoss == 0){ //0 means loss
             endGameInfo.setText(LOSS_END_GAME_TEXT);
-            endGameInfo.setMaxWidth(menuController.getScrX()/2);
-            endGameInfo.setFont(new Font(menuController.getScrY() / 20));
-            endGameInfo.setWrapText(true);
-
-            endGameInfo.setTranslateX(menuController.getScrX() / 2);
         }
+        else if (winOrLoss == 1){
+            endGameInfo.setText(WIN_END_GAME_TEXT);
+        }   
     }
 
     //Helpers
@@ -82,7 +86,8 @@ public class GameOverMenu extends Group implements InterfaceThemeObserver{ //We 
     //Interface Requirements
 
     public void update(ColorPackage cP){
-
+        endGameInfo.setTextFill(cP.getSecondaryColor());
+        mainMenuButton.update(cP);
     }
 
     public void setSubject(InterfaceThemeSubject sub){

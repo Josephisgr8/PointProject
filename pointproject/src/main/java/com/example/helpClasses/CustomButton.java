@@ -66,6 +66,7 @@ public class CustomButton extends ListElement implements InterfaceThemeObserver 
     public void update(ColorPackage cP){
         btnInner.setFill(cP.getPrimaryColor());
         btnOuter.setFill(cP.getSecondaryColor());
+        label.setTextFill(cP.getSecondaryColor());
     }
 
     public void setSubject(InterfaceThemeSubject sub){

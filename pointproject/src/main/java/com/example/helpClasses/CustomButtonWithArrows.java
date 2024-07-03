@@ -108,6 +108,10 @@ public class CustomButtonWithArrows extends ListElement implements InterfaceThem
         centerOuter.setFill(cP.getSecondaryColor());
         rightInner.setFill(cP.getPrimaryColor());
         rightOuter.setFill(cP.getSecondaryColor());
+
+        leftLabel.setTextFill(cP.getSecondaryColor());
+        centerLabel.setTextFill(cP.getSecondaryColor());
+        rightLabel.setTextFill(cP.getSecondaryColor());
     }
 
     public void setSubject(InterfaceThemeSubject sub){
