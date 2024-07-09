@@ -8,7 +8,7 @@ import javafx.scene.text.Font;
 
 public abstract class GameTileValueState {
     public abstract Label updateLabel();
-    public abstract void initializeLabel();
+    public abstract void initializeLabe();
     public abstract GameTileValueState nextState();
     public abstract Label setValue(int v);
     public abstract void guessedValue(int i);
@@ -31,7 +31,7 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
         value = val;
         size = s;
         wasGuessedRight = false;
-        initializeLabel();
+        initializeLabe();
     }
 
     public Label updateLabel(){
@@ -42,7 +42,7 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
         return label;
     }
     
-    public void initializeLabel(){
+    public void initializeLabe(){
         double fontSize = size/1.33333; //conversion from pixels to font size
         label.setText(" ");
         label.setFont(new Font("Arial", fontSize));
@@ -63,6 +63,7 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
             double fontSize = size / (1.33333); //conversion from pixels to font size
             label.setFont(new Font("Arial", fontSize));
             label.setText(Integer.toString(value));
+            readyForGuess();
             //also want to go through and remove this value from the possible values on the board
             wasGuessedRight = true;
         }
@@ -98,7 +99,7 @@ class GameTileValueStateHidden extends GameTileValueState{ //hidden means the re
 
     public void readyForGuess(){
         label.setTranslateX(size/4);
-    }
+    } 
 
     public boolean getWasGuessedRight(){
         return wasGuessedRight;
@@ -122,7 +123,7 @@ class GameTileValueStateShown extends GameTileValueState{
         label = l;
         value = val;
         size = s;
-        initializeLabel();
+        initializeLabe();
     }
 
     public Label updateLabel(){
@@ -133,7 +134,7 @@ class GameTileValueStateShown extends GameTileValueState{
         return label;
     }
 
-    public void initializeLabel(){
+    public void initializeLabe(){
         if (label == null){
             label = new Label(Integer.toString(value));
         }

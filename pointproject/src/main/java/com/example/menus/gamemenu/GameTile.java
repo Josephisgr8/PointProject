@@ -111,6 +111,7 @@ public class GameTile extends Group implements InterfaceThemeObserver{
         else{
             this.tileSelectState = new GameTileSelectStatePossibility(outerRect, gameBoard.getCurrTheme());
         }
+        label = tileSelectState.updateLabel(label, tileValueState);
         gameBoard.tileClicked(this);
     }
 

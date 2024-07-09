@@ -56,7 +56,7 @@ public class CustomButton extends ListElement implements InterfaceThemeObserver 
         label.setTranslateX((label.getTranslateX() + x/2) - ((label.getText().length()/2) * (label.getFont().getSize() / 2))); // trial and error for this math
         label.setTranslateY((label.getTranslateY() + y/2) - label.getFont().getSize() / 1.333);
 
-        label.setTextFill(Color.BLACK);
+        //label.setTextFill(Color.BLACK);
         //this.prefWidth(x);
         //this.prefHeight(y);
     }

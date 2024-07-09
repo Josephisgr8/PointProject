@@ -6,6 +6,8 @@ import java.util.TimerTask;
 import com.example.MenuController;
 import com.example.Interfaces.InterfaceKeyEventHandle;
 import com.example.Interfaces.InterfaceMenu;
+import com.example.helpClasses.CustomButton;
+import com.example.helpClasses.CustomButton.ButtonFunction;
 
 import javafx.application.Platform;
 import javafx.scene.*;
@@ -21,6 +23,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     final static int GAME_TIMER_HEIGHT_RATIO = 10; // 1/this of the screen will be dedicated to the timer;
     final static int WRONG_GUESS_DISPLAY_TIME = 500; //time the big red X will show on screen after a wrong guess in milliseconds
     final static String LIVES_TEXT = "Lives";
+    final static String SETTINGS_BUTTON_TEXT = "Settings";
     final static Color WRONG_GUESS_COLOR = Color.RED;
 
     private int scrX;
@@ -32,6 +35,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
     private GameTimer gameTimer;
     private Group wrongGuessX;
     private Timer wrongGuessTimer;
+    private CustomButton settingsButton;
 
 
     public GameMenu(int X, int Y, MenuController mC, GameBoard gB){
@@ -48,6 +52,7 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         createTips();
         createLives();
         createTimer();
+        createSettingsBtn();
     }
 
     public void updateLives(int i){ //This is called when a life is rmeoved
@@ -109,6 +114,20 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         gameTimer.startTimer();
     }
 
+    private void createSettingsBtn(){
+        settingsButton = new CustomButton(SETTINGS_BUTTON_TEXT, new SettingsMenu());
+        settingsButton.setSubject(menuController.getGameThemeHandler());
+
+        int screenXButtonRatio = 3;
+        int screenYButtonRatio = 10;
+
+        settingsButton.setPrefSize(menuController.getScrX() / 3, menuController.getScrY() / screenYButtonRatio);
+        settingsButton.setTranslateX(menuController.getScrX() / 2 - (menuController.getScrX() / (screenXButtonRatio * 2)));
+        settingsButton.setTranslateY(menuController.getScrY() - menuController.getScrY() / (screenYButtonRatio - 1));
+
+        this.getChildren().add(settingsButton);
+    }
+
     private void createWrongGuessX(){
         if (wrongGuessX != null && this.getChildren().contains(wrongGuessX)){
             this.getChildren().remove(wrongGuessX);
@@ -159,6 +178,12 @@ public class GameMenu extends Group implements InterfaceMenu, InterfaceKeyEventH
         @Override
         public void run() {
             Platform.runLater(() -> {removeWrongGuessIndicator();}); //Need to use platform.runlater because this code needs to be run on the javafx application thread, not the timer thread 
+        }
+    }
+
+    class SettingsMenu implements ButtonFunction{
+        public void assignFunction(){
+            menuController.setSettingsMenu();
         }
     }
 }

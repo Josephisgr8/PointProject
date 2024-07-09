@@ -108,7 +108,7 @@ public class SettingsMenu extends Group implements InterfaceMenu, InterfaceKeyEv
 
     private class ReturnToMenu implements ButtonFunction{
         public void assignFunction(){
-            moveToMainMenu();
+            menuController.goToPrevMenu();
         }
     }
     //INTERFACE

@@ -32,6 +32,7 @@ class GameTileSelectStateGuess extends GameTileSelectState{
     }
 
     public Label valueTyped(int i, GameTileValueState gtvs){
+        //gtvs.readyForGuess();
         gtvs.guessedValue(i);
         return gtvs.updateLabel();
     }
@@ -49,7 +50,7 @@ class GameTileSelectStateGuess extends GameTileSelectState{
     }
 
     public Label updateLabel(Label l, GameTileValueState gtvs){
-        gtvs.readyForGuess();
+        
         return gtvs.updateLabel();
     }
 }
@@ -66,6 +67,7 @@ class GameTileSelectStatePossibility extends GameTileSelectState{
     }
 
     public Label valueTyped(int i, GameTileValueState gtvs){
+        gtvs.readyForPossible();
         return gtvs.possibleValue(i);
     }
 
@@ -82,7 +84,7 @@ class GameTileSelectStatePossibility extends GameTileSelectState{
     }
 
     public Label updateLabel(Label l, GameTileValueState gtvs){
-        gtvs.readyForPossible();
+        
         return gtvs.updateLabel();
     }
 }
